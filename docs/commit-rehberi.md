@@ -238,26 +238,6 @@ Son commit sil:
 
 git reset --soft HEAD\~1
 
-------------------------------------------------------------------------
-
-# 📌 En İyi Uygulamalar (Best Practices)
-
--   Küçük commit at
--   Sık commit at
--   Anlamlı mesaj yaz
--   Feature branch kullan
--   Push öncesi test yap
--   Main branch korumalı olsun
-
-------------------------------------------------------------------------
-
-# 📂 Önerilen Branch Yapısı
-
-main\
-develop\
-feature/...\
-bugfix/...\
-hotfix/...
 
 ------------------------------------------------------------------------
 
