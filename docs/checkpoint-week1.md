@@ -2,9 +2,11 @@
 
 ## Altyapı Kurulumu, Ortam Hazırlığı ve Temel Üretim
 
-**Hafta:** 1
-**Sprint Hedefi:** Sistemin temel iskeletini ayağa kaldırmak ve ham metinden ilk UML çıktısını üretmek
-**Durum:** 🟡 Devam Ediyor
+- **Hafta:** 1
+- **Sprint Hedefi:** Sistemin temel iskeletini ayağa kaldırmak ve ham metinden ilk UML çıktısını üretmek
+- **Durum:** 🟡 Devam Ediyor
+- **Görev Başlangıç Tarihi:** 03.04.2026
+- **Görev Bitiş Tarihi:** 10.04.2026
 
 ---
 
