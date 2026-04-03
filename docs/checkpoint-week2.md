@@ -2,7 +2,7 @@
 
 ## Ajanların (Agents) Geliştirilmesi ve RAG Entegrasyonu
 
-- **Hafta:** 2\
+- **Hafta:** 2
 - **Sprint Hedefi:** Eleştirmen (Critic) ve Onarıcı (Healer) yapay zeka
 ajanlarını oluşturmak ve RAG altyapısını sisteme entegre etmek
 
