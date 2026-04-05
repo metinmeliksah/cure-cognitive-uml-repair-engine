@@ -259,7 +259,7 @@ Checkpoint dokümanı:
 -   İlerleme takip aracıdır
 -   Sprint kontrol aracıdır
 -   Ekip koordinasyon aracıdır
--   **Görev bitiş tarihinden sonra** ilgili haftaya ait commit kabul edilmez; süre sonunda hiç bitmeyen görevler **yapılmadı** (`❌`) sayılır.
+-   **Bir sonraki chechkpoint'in görev bitiş tarihinden sonra** ilgili haftaya ait commit kabul edilmez; süre sonunda hiç bitmeyen görevler **yapılmadı** (`❌`) sayılır.
 -   İşaretleme: dört işaretin anlamı *İşaretlerin açıklaması* bölümündedir; **süre bittikten sonra tamamlanan** her işte tabloda ve listede **`⏰` zorunludur**, `✅` yanlıştır.
 -   **Bir sonraki checkpoint’in bitişine kadar** geçmiş haftanın **görev durum işaretleri** ve üst **Durum:** özeti güncellenebilir; **o tarihten sonra** o hafta dosyasında **bunlar değiştirilmez** (iş kodda kalsa bile).
 -   Üstteki **`Durum:`** satırı renk + kısa parantezli bilgilendirme ile haftayı özetler; ayrıntı *Durum satırı ve renkler* bölümündedir.
