@@ -14,7 +14,7 @@
 
 * [X] Proje repository oluşturuldu
 * [X] Branch yönetim kuralları belirlendi
-* [ ] Frontend temel arayüz hazır
+* [X] Frontend temel arayüz hazır
 * [ ] Backend API çalışır durumda
 * [ ] LLM bağlantısı kuruldu
 * [ ] PlantUML render sistemi entegre edildi
@@ -36,12 +36,12 @@
 | Proje repository oluşturma  | GitHub üzerinde ana proje oluşturulacak     | Scrum Master | [X]   |
 | Branch stratejisi belirleme | main / isim-soyisim yapısı kurulacak        | Scrum Master | [X]   |
 | Branch koruma kuralları     | PR zorunlu olacak                           | Scrum Master | [X]   |
-| Frontend framework kurulumu | React veya Vue.js kurulacak                 | Frontend     | [ ]   |
-| Proje klasör yapısı         | components / pages / services oluşturulacak | Frontend     | [ ]   |
-| Dosya yükleme ekranı        | txt / pdf yükleme UI yapılacak              | Frontend     | [ ]   |
-| API bağlantı altyapısı      | Backend endpoint çağrısı hazırlanacak       | Frontend     | [ ]   |
-| Hata mesajları              | Upload başarısızsa kullanıcıya gösterilecek | Frontend     | [ ]   |
-| Loading ekranı              | İşlem sırasında spinner gösterilecek        | Frontend     | [ ]   |
+| Frontend framework kurulumu | React veya Vue.js kurulacak                 | Frontend     | [X]   |
+| Proje klasör yapısı         | components / pages / services oluşturulacak | Frontend     | [X]   |
+| Dosya yükleme ekranı        | txt / pdf yükleme UI yapılacak              | Frontend     | [X]   |
+| API bağlantı altyapısı      | Backend endpoint çağrısı hazırlanacak       | Frontend     | [X]   |
+| Hata mesajları              | Upload başarısızsa kullanıcıya gösterilecek | Frontend     | [X]   |
+| Loading ekranı              | İşlem sırasında spinner gösterilecek        | Frontend     | [X]   |
 
 ---
 
@@ -103,7 +103,7 @@
 
 | Teslimat          | Açıklama             | Durum |
 | ----------------- | -------------------- | ----- |
-| Frontend arayüz   | Dosya yükleme ekranı | [ ]   |
+| Frontend arayüz   | Dosya yükleme ekranı | [X]   |
 | Backend API       | UML üretim endpoint  | [ ]   |
 | AI üretim sistemi | PlantUML çıktısı     | [ ]   |
 | Render sistemi    | UML görsel üretimi   | [ ]   |
