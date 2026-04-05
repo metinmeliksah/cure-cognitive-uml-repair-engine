@@ -1,4 +1,4 @@
-# 📌 Checkpoint --- Hafta 2
+# 📌 Checkpoint — Hafta 2
 
 ## Ajanların (Agents) Geliştirilmesi ve RAG Entegrasyonu
 
@@ -34,15 +34,15 @@
 
 | Görev | Açıklama | Sorumlu | Durum |
 | --- | --- | --- | --- |
-| Hata log ekranı tasarlama | Halüsinasyon ve Design Smell uyarıları | Frontend | [ ] |
-| UI hata listesi oluşturma | Hata mesajlarını listeleme | Frontend | [ ] |
-| Diyagram hata vurgulama | Hatalı alanları kırmızı renkle gösterme | Frontend | [ ] |
-| Tooltip sistemi | Hata detayını hover ile gösterme | Frontend | [ ] |
-| Status badge sistemi | Hata türü göstergeleri | Frontend | [ ] |
-| Log panel bileşeni | Hata geçmişi ekranı | Frontend | [ ] |
-| API hata verisi gösterme | Backend'den gelen JSON'u UI'da gösterme | Frontend | [ ] |
-| Responsive tasarım | Mobil uyumlu hata ekranı | Frontend | [ ] |
-| Branch yönetimi kontrolü | Feature branch kullanımı | Scrum Master | [ ] |
+| Hata log ekranı tasarlama | Halüsinasyon ve Design Smell uyarıları | Frontend | ⬜ |
+| UI hata listesi oluşturma | Hata mesajlarını listeleme | Frontend | ⬜ |
+| Diyagram hata vurgulama | Hatalı alanları kırmızı renkle gösterme | Frontend | ⬜ |
+| Tooltip sistemi | Hata detayını hover ile gösterme | Frontend | ⬜ |
+| Status badge sistemi | Hata türü göstergeleri | Frontend | ⬜ |
+| Log panel bileşeni | Hata geçmişi ekranı | Frontend | ⬜ |
+| API hata verisi gösterme | Backend'den gelen JSON'u UI'da gösterme | Frontend | ⬜ |
+| Responsive tasarım | Mobil uyumlu hata ekranı | Frontend | ⬜ |
+| Branch yönetimi kontrolü | Feature branch kullanımı | Scrum Master | ⬜ |
 
 ------------------------------------------------------------------------
 
@@ -52,15 +52,15 @@
 
 | Görev | Açıklama | Sorumlu | Durum |
 | --- | --- | --- | --- |
-| LangGraph ajan tanımı | Critic node oluşturma | AI Developer | [ ] |
-| Healer ajan tanımı | Onarıcı node oluşturma | AI Developer | [ ] |
-| Ajan mesajlaşma sistemi | Agent-to-agent communication | AI Developer | [ ] |
-| Edge mantığı kodlama | Workflow geçiş kuralları | AI Developer | [ ] |
-| Halüsinasyon tespit promptu | UML doğrulama promptu | AI Developer | [ ] |
-| Onarım promptu | Hatalı UML düzeltme | AI Developer | [ ] |
-| Multi-agent workflow test | Sistem testleri | AI Developer | [ ] |
-| Logging entegrasyonu | Agent çıktı loglama | AI Developer | [ ] |
-| Hata sınıflandırma | Error type categorization | AI Developer | [ ] |
+| LangGraph ajan tanımı | Critic node oluşturma | AI Developer | ⬜ |
+| Healer ajan tanımı | Onarıcı node oluşturma | AI Developer | ⬜ |
+| Ajan mesajlaşma sistemi | Agent-to-agent communication | AI Developer | ⬜ |
+| Edge mantığı kodlama | Workflow geçiş kuralları | AI Developer | ⬜ |
+| Halüsinasyon tespit promptu | UML doğrulama promptu | AI Developer | ⬜ |
+| Onarım promptu | Hatalı UML düzeltme | AI Developer | ⬜ |
+| Multi-agent workflow test | Sistem testleri | AI Developer | ⬜ |
+| Logging entegrasyonu | Agent çıktı loglama | AI Developer | ⬜ |
+| Hata sınıflandırma | Error type categorization | AI Developer | ⬜ |
 
 ------------------------------------------------------------------------
 
@@ -70,15 +70,15 @@
 
 | Görev | Açıklama | Sorumlu | Durum |
 | --- | --- | --- | --- |
-| JSON parser geliştirme | AI hata raporu ayrıştırma | Backend | [ ] |
-| Error response handler | Hata mesajı işleme | Backend | [ ] |
-| Try-catch mekanizması | Syntax hatalarını yakalama | Backend | [ ] |
-| PlantUML syntax kontrol | UML doğrulama | Backend | [ ] |
-| Error log sistemi | Hata kayıt mekanizması | Backend | [ ] |
-| Exception logging | Runtime hata kaydı | Backend | [ ] |
-| API hata endpoint | /error-log endpoint | Backend | [ ] |
-| Unit test yazımı | Parser testleri | Test | [ ] |
-| Integration test | Agent + API testleri | Test | [ ] |
+| JSON parser geliştirme | AI hata raporu ayrıştırma | Backend | ⬜ |
+| Error response handler | Hata mesajı işleme | Backend | ⬜ |
+| Try-catch mekanizması | Syntax hatalarını yakalama | Backend | ⬜ |
+| PlantUML syntax kontrol | UML doğrulama | Backend | ⬜ |
+| Error log sistemi | Hata kayıt mekanizması | Backend | ⬜ |
+| Exception logging | Runtime hata kaydı | Backend | ⬜ |
+| API hata endpoint | /error-log endpoint | Backend | ⬜ |
+| Unit test yazımı | Parser testleri | Test | ⬜ |
+| Integration test | Agent + API testleri | Test | ⬜ |
 
 ------------------------------------------------------------------------
 
@@ -88,15 +88,15 @@
 
 | Görev | Açıklama | Sorumlu | Durum |
 | --- | --- | --- | --- |
-| Vektör veritabanı kurulumu | ChromaDB veya FAISS | Data Specialist | [ ] |
-| Veri klasörü oluşturma | vector_db dizini | Data Specialist | [ ] |
-| OCL kurallarını chunking | Metin parçalama | Data Specialist | [ ] |
-| Embedding oluşturma | Vektör dönüşümü | Data Specialist | [ ] |
-| Vector index oluşturma | Arama indeksleme | Data Specialist | [ ] |
-| RAG retrieval fonksiyonu | Semantic search | Data Specialist | [ ] |
-| Veri doğrulama testleri | Retrieval accuracy test | Data Specialist | [ ] |
-| Dataset versiyonlama | Veri yönetimi | Data Specialist | [ ] |
-| RAG performans ölçümü | Query latency ölçümü | Data Specialist | [ ] |
+| Vektör veritabanı kurulumu | ChromaDB veya FAISS | Data Specialist | ⬜ |
+| Veri klasörü oluşturma | vector_db dizini | Data Specialist | ⬜ |
+| OCL kurallarını chunking | Metin parçalama | Data Specialist | ⬜ |
+| Embedding oluşturma | Vektör dönüşümü | Data Specialist | ⬜ |
+| Vector index oluşturma | Arama indeksleme | Data Specialist | ⬜ |
+| RAG retrieval fonksiyonu | Semantic search | Data Specialist | ⬜ |
+| Veri doğrulama testleri | Retrieval accuracy test | Data Specialist | ⬜ |
+| Dataset versiyonlama | Veri yönetimi | Data Specialist | ⬜ |
+| RAG performans ölçümü | Query latency ölçümü | Data Specialist | ⬜ |
 
 ------------------------------------------------------------------------
 
@@ -104,12 +104,12 @@
 
 | Teslimat | Açıklama | Durum |
 | --- | --- | --- |
-| Critic Agent | Hata tespit sistemi | [ ] |
-| Healer Agent | Otomatik onarım sistemi | [ ] |
-| RAG altyapısı | Vektör arama sistemi | [ ] |
-| Error parser | JSON hata ayrıştırma | [ ] |
-| Log sistemi | Hata kayıt mekanizması | [ ] |
-| UI hata paneli | Frontend hata ekranı | [ ] |
+| Critic Agent | Hata tespit sistemi | ⬜ |
+| Healer Agent | Otomatik onarım sistemi | ⬜ |
+| RAG altyapısı | Vektör arama sistemi | ⬜ |
+| Error parser | JSON hata ayrıştırma | ⬜ |
+| Log sistemi | Hata kayıt mekanizması | ⬜ |
+| UI hata paneli | Frontend hata ekranı | ⬜ |
 
 ------------------------------------------------------------------------
 
@@ -129,4 +129,4 @@
 -   Tüm geliştirmeler branch üzerinde yapılacaktır
 -   Pull Request zorunludur
 -   Kod review yapılmadan merge edilmez
--   Her görev tamamlandığında checkbox işaretlenecektir
+-   Liste görevlerinde `- [x]` / `- [ ]` (gerekirse satıra `⏰` geç teslim, `❌` tamamlanmadı); tablolarda `⬜` / `✅` / `⏰` / `❌` (bkz. `checkpoint-kullanim-rehberi.md`)
