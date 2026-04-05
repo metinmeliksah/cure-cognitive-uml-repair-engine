@@ -1,4 +1,4 @@
-# 📌 Checkpoint --- Hafta 2
+# 📌 Checkpoint — Hafta 2
 
 ## Ajanların (Agents) Geliştirilmesi ve RAG Entegrasyonu
 
