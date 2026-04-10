@@ -4,7 +4,7 @@
 
 - **Hafta:** 1
 - **Sprint Hedefi:** Sistemin temel iskeletini ayağa kaldırmak ve ham metinden ilk UML çıktısını üretmek
-- **Durum:** 🟡 Devam Ediyor
+- **Durum:** 🟢 Tamamlandı (eksiklerle; bazı görevler ❌/⬜)
 - **Görev Başlangıç Tarihi:** 03.04.2026
 - **Görev Bitiş Tarihi:** 10.04.2026
 
@@ -18,7 +18,7 @@
 - [ ] Backend API çalışır durumda
 - [ ] LLM bağlantısı kuruldu
 - [ ] PlantUML render sistemi entegre edildi
-- [ ] Test veri seti hazırlandı
+- [X] Test veri seti hazırlandı
 - [ ] OCL ve UML standart dokümanları toplandı
 
 ---
@@ -51,15 +51,15 @@
 
 | Görev                 | Açıklama                          | Sorumlu      | Durum |
 | --------------------- | --------------------------------- | ------------ | ----- |
-| Python ortam kurulumu | Virtual environment oluşturulacak | AI Developer | ⬜   |
-| LangChain kurulumu    | pip install langchain             | AI Developer | ⬜   |
-| LangGraph kurulumu    | Multi-agent sistem için           | AI Developer | ⬜   |
-| LLM API bağlantısı    | OpenAI / Claude / Llama           | AI Developer | ⬜   |
-| API anahtar yönetimi  | .env dosyasında saklanacak        | AI Developer | ⬜   |
-| Prompt tasarımı       | Ham metinden UML üretimi          | AI Developer | ⬜   |
-| İlk PlantUML üretimi  | Basit UML çıktısı alınacak        | AI Developer | ⬜   |
-| Prompt testleri       | Farklı metinlerle test yapılacak  | AI Developer | ⬜   |
-| Loglama sistemi       | Üretilen çıktılar kaydedilecek    | AI Developer | ⬜   |
+| Python ortam kurulumu | Virtual environment oluşturulacak | AI Developer | ❌   |
+| LangChain kurulumu    | pip install langchain             | AI Developer | ❌   |
+| LangGraph kurulumu    | Multi-agent sistem için           | AI Developer | ❌   |
+| LLM API bağlantısı    | OpenAI / Claude / Llama           | AI Developer | ❌   |
+| API anahtar yönetimi  | .env dosyasında saklanacak        | AI Developer | ❌   |
+| Prompt tasarımı       | Ham metinden UML üretimi          | AI Developer | ❌   |
+| İlk PlantUML üretimi  | Basit UML çıktısı alınacak        | AI Developer | ❌   |
+| Prompt testleri       | Farklı metinlerle test yapılacak  | AI Developer | ❌   |
+| Loglama sistemi       | Üretilen çıktılar kaydedilecek    | AI Developer | ❌   |
 
 ---
 
@@ -69,15 +69,15 @@
 
 | Görev                      | Açıklama                    | Sorumlu | Durum |
 | -------------------------- | --------------------------- | ------- | ----- |
-| Backend framework kurulumu | FastAPI veya Flask          | Backend | ⬜   |
-| API endpoint oluşturma     | /generate-uml               | Backend | ⬜   |
-| Request validation         | Gelen veri kontrolü         | Backend | ⬜   |
-| LLM entegrasyonu           | API üzerinden model çağrısı | Backend | ⬜   |
-| PlantUML entegrasyonu      | UML kodu → görsel           | Backend | ⬜   |
-| PNG / SVG üretimi          | Diagram render              | Backend | ⬜   |
-| Hata yönetimi              | Exception handling          | Backend | ⬜   |
-| Unit test yazımı           | Endpoint testleri           | Test    | ⬜   |
-| API response formatı       | JSON standardı              | Backend | ⬜   |
+| Backend framework kurulumu | FastAPI veya Flask          | Backend | ❌   |
+| API endpoint oluşturma     | /generate-uml               | Backend | ❌   |
+| Request validation         | Gelen veri kontrolü         | Backend | ❌   |
+| LLM entegrasyonu           | API üzerinden model çağrısı | Backend | ❌   |
+| PlantUML entegrasyonu      | UML kodu → görsel           | Backend | ❌   |
+| PNG / SVG üretimi          | Diagram render              | Backend | ❌   |
+| Hata yönetimi              | Exception handling          | Backend | ❌   |
+| Unit test yazımı           | Endpoint testleri           | Test    | ❌   |
+| API response formatı       | JSON standardı              | Backend | ❌   |
 
 ---
 
@@ -87,15 +87,15 @@
 
 | Görev                  | Açıklama                        | Sorumlu         | Durum |
 | ---------------------- | ------------------------------- | --------------- | ----- |
-| PURE dataset indirme   | Resmi veri seti alınacak        | Data Specialist | ⬜   |
-| Veri temizleme         | Gereksiz veriler çıkarılacak    | Data Specialist | ⬜   |
-| Gereksinim metni seçme | UML testinde kullanılacak       | Data Specialist | ⬜   |
-| Veri formatlama        | txt / json formatına dönüştürme | Data Specialist | ⬜   |
-| Test veri klasörü      | data/test oluşturulacak         | Data Specialist | ⬜   |
-| OCL kuralları toplama  | UML doğrulama kuralları         | Data Specialist | ⬜   |
-| UML standart dokümanı  | UML specification               | Data Specialist | ⬜   |
-| Doküman depolama       | docs klasörüne koyma            | Data Specialist | ⬜   |
-| Version kontrol        | Veri seti versiyonlama          | Data Specialist | ⬜   |
+| PURE dataset indirme   | Resmi veri seti alınacak        | Data Specialist | ✅  |
+| Veri temizleme         | Gereksiz veriler çıkarılacak    | Data Specialist | ✅  |
+| Gereksinim metni seçme | UML testinde kullanılacak       | Data Specialist | ✅  |
+| Veri formatlama        | txt / json formatına dönüştürme | Data Specialist | ✅  |
+| Test veri klasörü      | data/test oluşturulacak         | Data Specialist | ❌  |
+| OCL kuralları toplama  | UML doğrulama kuralları         | Data Specialist | ❌  |
+| UML standart dokümanı  | UML specification               | Data Specialist | ❌ |
+| Doküman depolama       | docs klasörüne koyma            | Data Specialist | ❌ |
+| Version kontrol        | Veri seti versiyonlama          | Data Specialist | ❌ |
 
 ---
 
@@ -104,11 +104,11 @@
 | Teslimat          | Açıklama             | Durum |
 | ----------------- | -------------------- | ----- |
 | Frontend arayüz   | Dosya yükleme ekranı | ✅   |
-| Backend API       | UML üretim endpoint  | ⬜   |
-| AI üretim sistemi | PlantUML çıktısı     | ⬜   |
-| Render sistemi    | UML görsel üretimi   | ⬜   |
-| Test veri seti    | Temizlenmiş veri     | ⬜   |
-| Dokümantasyon     | UML ve OCL kuralları | ⬜   |
+| Backend API       | UML üretim endpoint  | ❌   |
+| AI üretim sistemi | PlantUML çıktısı     | ❌   |
+| Render sistemi    | UML görsel üretimi   | ❌   |
+| Test veri seti    | Temizlenmiş veri     | ✅   |
+| Dokümantasyon     | UML ve OCL kuralları | ❌   |
 
 ---
 
@@ -119,7 +119,7 @@
 - [ ] LLM bağlantısı aktif
 - [ ] UML kodu üretiliyor
 - [ ] UML görsel olarak render ediliyor
-- [ ] Test veri seti hazır
+- [X] Test veri seti hazır
 
 ---
 
