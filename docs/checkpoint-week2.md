@@ -5,7 +5,7 @@
 - **Hafta:** 2
 - **Sprint Hedefi:** Eleştirmen (Critic) ve Onarıcı (Healer) yapay zeka ajanlarını oluşturmak ve RAG altyapısını sisteme entegre etmek
 
-- **Durum:** 🔴 Başlanmadı
+- **Durum:** 🟡 Devam Ediyor
 - **Görev Başlangıç Tarihi:** 10.04.2026
 - **Görev Bitiş Tarihi:** 20.04.2026
 - **Vize haftası sebebiyle 10 gün teslim süresi uygulanmıştır. Checkpoint 3 başlangıç tarihi etkilenmeyecektir.**
