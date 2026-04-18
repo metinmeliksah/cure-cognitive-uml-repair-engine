@@ -6,7 +6,7 @@
 - **Sprint Hedefi:** Sistem başarısını bilimsel metriklerle ölçmek, semantik kalite skoru üretmek ve IEEE formatında akademik bildiriyi tamamlayıp teslim etmek
 - **Durum:** 🔴 Başlanmadı
 - **Görev Başlangıç Tarihi:** 24.04.2026
-- **Görev Bitiş Tarihi:** 01.05.2026
+- **Görev Bitiş Tarihi:** 10.05.2026
 
 ------------------------------------------------------------------------
 
