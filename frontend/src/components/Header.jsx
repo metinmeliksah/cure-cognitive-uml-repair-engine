@@ -1,7 +1,12 @@
 import { useTheme } from '../context/ThemeContext';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Home, AlertCircle } from 'lucide-react';
 
-const Header = () => {
+const NAV_ITEMS = [
+  { id: 'home', label: 'Ana Sayfa', icon: Home },
+  { id: 'errors', label: 'Hata Günlüğü', icon: AlertCircle },
+];
+
+const Header = ({ currentPage, onNavigate }) => {
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -11,8 +16,23 @@ const Header = () => {
           <div className="logo">
             <h1>CURE</h1>
           </div>
-          <button 
-            onClick={toggleTheme} 
+
+          <nav className="main-nav" aria-label="Ana navigasyon">
+            {NAV_ITEMS.map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                className={`nav-btn ${currentPage === id ? 'nav-btn--active' : ''}`}
+                onClick={() => onNavigate?.(id)}
+                aria-current={currentPage === id ? 'page' : undefined}
+              >
+                <Icon size={16} />
+                <span>{label}</span>
+              </button>
+            ))}
+          </nav>
+
+          <button
+            onClick={toggleTheme}
             className="theme-toggle"
             aria-label="Tema değiştir"
           >

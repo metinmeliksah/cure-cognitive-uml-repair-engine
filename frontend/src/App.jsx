@@ -1,15 +1,25 @@
+import { useState } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
+import ErrorLogPage from './pages/ErrorLogPage';
 import './App.css';
 
+const PAGES = {
+  home: HomePage,
+  errors: ErrorLogPage,
+};
+
 function App() {
+  const [currentPage, setCurrentPage] = useState('home');
+  const PageComponent = PAGES[currentPage] ?? HomePage;
+
   return (
     <ThemeProvider>
       <div className="app">
-        <Header />
+        <Header currentPage={currentPage} onNavigate={setCurrentPage} />
         <main className="main-content">
-          <HomePage />
+          <PageComponent />
         </main>
         <footer className="footer">
           <div className="container">
