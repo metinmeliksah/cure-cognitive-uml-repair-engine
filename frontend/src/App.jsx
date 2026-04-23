@@ -3,11 +3,13 @@ import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import ErrorLogPage from './pages/ErrorLogPage';
+import RepairPage from './pages/RepairPage';
 import './App.css';
 
 const PAGES = {
   home: HomePage,
   errors: ErrorLogPage,
+  repair: RepairPage,
 };
 
 function App() {
