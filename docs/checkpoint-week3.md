@@ -33,14 +33,14 @@
 
 | Görev | Açıklama | Sorumlu | Durum |
 | --- | --- | --- | --- |
-| Sprint planı netleştirme | Hafta 3 kapsamı ve acceptance criteria kilitleme | Scrum Master | ⬜ |
-| Otonom onarım progress bar | Iterasyon ilerlemesini yüzde ve adım bazlı gösterme | Frontend | ⬜ |
-| Progress durum etiketleri | `Analiz`, `Onarım`, `Derleme Testi`, `Tamamlandı` adımlarını görselleştirme | Frontend | ⬜ |
-| Log akış paneli tasarımı | Sistemin her denemesini kronolojik timeline olarak gösterme | Frontend | ⬜ |
-| Iterasyon kart bileşeni | Her deneme için hata tipi, düzeltme özeti, compile sonucu gösterme | Frontend | ⬜ |
-| Canlı durum güncellemesi | Backend stream/polling ile ekranın anlık güncellenmesi | Frontend | ⬜ |
-| Başarı/başarısızlık görsel dili | 3 deneme sonrası başarısızlık veya başarı durumlarını ayırt etme | Frontend | ⬜ |
-| Kullanıcı bilgilendirme metinleri | Otonom süreçte kullanıcıya "bekle", "incele", "tamamlandı" mesajları | Frontend | ⬜ |
+| Sprint planı netleştirme | Hafta 3 kapsamı ve acceptance criteria kilitleme | Scrum Master | ✅ |
+| Otonom onarım progress bar | Iterasyon ilerlemesini yüzde ve adım bazlı gösterme | Frontend | ✅ |
+| Progress durum etiketleri | `Analiz`, `Onarım`, `Derleme Testi`, `Tamamlandı` adımlarını görselleştirme | Frontend | ✅ |
+| Log akış paneli tasarımı | Sistemin her denemesini kronolojik timeline olarak gösterme | Frontend | ✅ |
+| Iterasyon kart bileşeni | Her deneme için hata tipi, düzeltme özeti, compile sonucu gösterme | Frontend | ✅ |
+| Canlı durum güncellemesi | Backend stream/polling ile ekranın anlık güncellenmesi | Frontend | ✅ |
+| Başarı/başarısızlık görsel dili | 3 deneme sonrası başarısızlık veya başarı durumlarını ayırt etme | Frontend | ✅ |
+| Kullanıcı bilgilendirme metinleri | Otonom süreçte kullanıcıya "bekle", "incele", "tamamlandı" mesajları | Frontend | ✅ |
 | Günlük scrum takip notu | Ekip ilerleme-gelinen engel-kapanan risk kayıtları | Scrum Master | ⬜ |
 
 ------------------------------------------------------------------------
