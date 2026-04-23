@@ -1,9 +1,10 @@
 import { useTheme } from '../context/ThemeContext';
-import { Sun, Moon, Home, AlertCircle } from 'lucide-react';
+import { Sun, Moon, Home, AlertCircle, Activity } from 'lucide-react';
 
 const NAV_ITEMS = [
   { id: 'home', label: 'Ana Sayfa', icon: Home },
   { id: 'errors', label: 'Hata Günlüğü', icon: AlertCircle },
+  { id: 'repair', label: 'Onarım İzleme', icon: Activity },
 ];
 
 const Header = ({ currentPage, onNavigate }) => {

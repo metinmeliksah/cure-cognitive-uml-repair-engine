@@ -1357,6 +1357,624 @@ body {
   }
 }
 
+/* ── Repair Page ─────────────────────────────────────────────── */
+
+.repair-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.repair-controls .mock-notice {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+/* Senaryo seçici */
+
+.scenario-picker {
+  position: relative;
+}
+
+.scenario-picker__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.scenario-picker__btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.scenario-picker__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  z-index: 50;
+  min-width: 200px;
+  overflow: hidden;
+}
+
+.scenario-picker__item {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.scenario-picker__item:hover {
+  background: var(--bg-secondary);
+  color: var(--primary);
+}
+
+.scenario-picker__item--active {
+  color: var(--primary);
+  font-weight: 700;
+  background: rgba(99, 102, 241, 0.06);
+}
+
+/* Kullanıcı bilgi banner */
+
+.repair-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.repair-banner--waiting {
+  background: rgba(99, 102, 241, 0.07);
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+
+.repair-banner--success {
+  background: rgba(16, 185, 129, 0.07);
+  border: 1px solid var(--success);
+  color: var(--success);
+}
+
+.repair-banner--failed {
+  background: rgba(239, 68, 68, 0.07);
+  border: 1px solid var(--error);
+  color: var(--error);
+}
+
+.repair-banner__icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.repair-banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.repair-banner__text strong {
+  font-weight: 700;
+}
+
+/* Pulse dot (bekle durumu) */
+
+.pulse-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* Progress bar */
+
+.repair-progress {
+  margin-bottom: 32px;
+}
+
+.repair-progress__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.repair-progress__label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.repair-progress__label--active  { color: var(--primary); }
+.repair-progress__label--success { color: var(--success); }
+.repair-progress__label--failed  { color: var(--error); }
+
+.repair-progress__iteration-badge {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 12px;
+}
+
+.repair-progress__bar-wrap {
+  height: 8px;
+  background: var(--bg-secondary);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+
+.repair-progress__bar {
+  height: 100%;
+  background: var(--bg-gradient);
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.repair-progress__bar--failed {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+}
+
+/* Adım etiketleri */
+
+.repair-progress__steps {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  position: relative;
+}
+
+.repair-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+  position: relative;
+}
+
+.repair-step__icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-tertiary);
+  transition: var(--transition);
+  position: relative;
+  z-index: 1;
+}
+
+.repair-step--done  .repair-step__icon { border-color: var(--success); color: var(--success); background: rgba(16,185,129,0.1); }
+.repair-step--active .repair-step__icon { border-color: var(--primary); color: var(--primary); background: rgba(99,102,241,0.1); }
+
+.repair-step__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.repair-step__label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.repair-step__desc {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.3;
+}
+
+.repair-step--pending .repair-step__label,
+.repair-step--pending .repair-step__desc { color: var(--text-tertiary); }
+
+.repair-step__connector {
+  position: absolute;
+  top: 16px;
+  left: 32px;
+  width: calc(100% - 40px);
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.repair-step__connector--done { background: var(--success); }
+
+/* Dönen ikon */
+.spin-icon { animation: spin 1.2s linear infinite; }
+
+/* Repair actions */
+
+.repair-actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.btn-secondary {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1.5px solid var(--border);
+}
+
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.spinner--sm {
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
+}
+
+.repair-done-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.repair-done-actions .btn {
+  width: auto;
+  max-width: none;
+}
+
+/* Boş durum (idle) */
+
+.repair-idle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 64px 32px;
+  text-align: center;
+  color: var(--text-tertiary);
+}
+
+.repair-idle__icon {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+  border: 2px dashed var(--border);
+  border-radius: 50%;
+  color: var(--text-tertiary);
+}
+
+.repair-idle p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 480px;
+  line-height: 1.7;
+}
+
+/* ── Repair Timeline ──────────────────────────────────────────── */
+
+.repair-timeline {
+  margin-top: 8px;
+}
+
+.repair-timeline__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.repair-timeline__count {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.repair-timeline__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 24px;
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+.repair-timeline__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.repair-timeline__item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.repair-timeline__line-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 18px;
+  flex-shrink: 0;
+}
+
+.repair-timeline__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid transparent;
+}
+
+.repair-timeline__dot--success { background: var(--success); border-color: rgba(16,185,129,0.3); }
+.repair-timeline__dot--failed  { background: var(--error);   border-color: rgba(239,68,68,0.3); }
+
+.repair-timeline__connector {
+  width: 2px;
+  flex: 1;
+  min-height: 16px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+.repair-timeline__card {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 16px;
+}
+
+/* ── Iteration Card ───────────────────────────────────────────── */
+
+.iteration-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-primary);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.iteration-card--success { border-left: 4px solid var(--success); }
+.iteration-card--failed  { border-left: 4px solid var(--error); }
+
+.iteration-card--latest {
+  box-shadow: var(--shadow);
+}
+
+.iteration-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: var(--transition-fast);
+}
+
+.iteration-card__header:hover {
+  background: var(--bg-secondary);
+}
+
+.iteration-card__number {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+.icon-success { color: var(--success); }
+.icon-failed  { color: var(--error); }
+
+.iteration-card__latest-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--bg-gradient);
+  color: white;
+  letter-spacing: 0.04em;
+}
+
+.iteration-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.compile-ok   { color: var(--success); font-weight: 600; }
+.compile-fail { color: var(--error); font-weight: 600; }
+
+.iteration-card__duration {
+  font-family: monospace;
+}
+
+.iteration-card__toggle {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.iteration-card__errors-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 16px 12px;
+}
+
+.iteration-card__err-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.chip-type {
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+/* Genişletilmiş kart içeriği */
+
+.iteration-card__body {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--bg-secondary);
+}
+
+.iteration-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.iteration-section__title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.iteration-ocl {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--primary);
+  background: rgba(99, 102, 241, 0.07);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 6px;
+  padding: 6px 10px;
+  display: block;
+}
+
+.iteration-fix-summary {
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.iteration-diff {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.iteration-diff {
+  color: var(--text-secondary);
+}
+
+.iteration-compile-error,
+.iteration-compile-success {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.iteration-compile-error {
+  background: rgba(239, 68, 68, 0.07);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: var(--error);
+}
+
+.iteration-compile-success {
+  background: rgba(16, 185, 129, 0.07);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: var(--success);
+}
+
 /* ── Footer ──────────────────────────────────────────────────── */
 
 .footer {
