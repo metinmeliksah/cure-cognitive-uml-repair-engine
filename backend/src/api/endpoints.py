@@ -5,7 +5,7 @@ from typing import Optional
 import sys, os
 
 # Modülleri import et
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from parsers.srs_parser import srs_to_plantuml
 from evaluators.semantic_eval import semantik_sadakat_skoru
 from ocl_engine.ocl_validator import ocl_dogrula
