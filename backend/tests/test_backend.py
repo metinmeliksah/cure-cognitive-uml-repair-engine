@@ -80,7 +80,7 @@ def test_ocl_eksik_etiket():
 def test_ocl_bos_diyagram():
     """Boş diyagram hata vermeli."""
     r = ocl_dogrula("@startuml\n@enduml")
-    assert len(r["hatalar"]) > 0 or len(r["uyarilar"]) >= 0
+    assert r["sinif_sayisi"] == 0
     print(f"  PASS: Bos diyagram islendi, sinif_sayisi={r['sinif_sayisi']}")
 
 # ── Semantik Değerlendirme Testleri ──────────────────────────
