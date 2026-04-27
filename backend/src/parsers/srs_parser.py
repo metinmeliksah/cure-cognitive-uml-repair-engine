@@ -41,7 +41,7 @@ def extract_classes(text: str) -> list:
     
     # Teknik varlıklar
     tech_entities = re.findall(
-        r'\b(database|server|client|api|interface|module|component|'
+        r'\b(database|server|client|interface|module|component|'
         r'subsystem|layer|agent|model|diagram|report|document)\b',
         text, re.IGNORECASE
     )
