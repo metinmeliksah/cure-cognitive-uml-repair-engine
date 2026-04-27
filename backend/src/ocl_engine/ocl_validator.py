@@ -147,7 +147,8 @@ def ocl_dogrula(plantuml_kodu: str) -> dict:
     for src, tgt in iliskiler:
         iliskili_siniflar.add(src)
         iliskili_siniflar.add(tgt)
-    izole = [s for s in siniflar if s not in iliskili_siniflar and len(siniflar) > 1]
+    iliskili_lower = {i.lower() for i in iliskili_siniflar}
+    izole = [s for s in siniflar if s.lower() not in iliskili_lower and len(siniflar) > 1]
     if izole:
         uyarilar.append(f"{OCL_KURALLARI['OCL-06'].aciklama}: {izole}")
         detaylar["OCL-06"] = f"UYARI: {izole}"

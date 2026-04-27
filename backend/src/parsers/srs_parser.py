@@ -21,7 +21,9 @@ STOP_WORDS = {
     'when','where','which','who','how','what','all','each','every',
     'system','user','data','information','process','function',
     'the','and','or','but','not','with','from','into','onto',
-    'shall','must','should','will','can','may','need'
+    'shall','must','should','will','can','may','need',
+    'uml','api','rest','json','xml','html','css','sql','url',
+    'http','https','pdf','csv','srs','ocl','llm','ai','ui','ux',
 }
 
 def extract_classes(text: str) -> list:
