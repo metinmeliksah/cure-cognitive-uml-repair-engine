@@ -179,7 +179,6 @@ def ocl_dogrula(plantuml_kodu: str) -> dict:
         detaylar["OCL-09"] = "GECTI"
     
     # Skor hesaplama
-    toplam_kural = len(OCL_KURALLARI)
     ihlal_sayisi = len(hatalar)
     uyari_sayisi = len(uyarilar)
     skor = max(0.0, 1.0 - (ihlal_sayisi * 0.2) - (uyari_sayisi * 0.05))
