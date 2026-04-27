@@ -155,6 +155,7 @@ def tam_analiz_yap(girdi: SRSGirdisi):
             "ocl": {
                 "gecerli_mi": ocl_sonuc["gecerli_mi"],
                 "skor": ocl_sonuc["skor"],
+                "yuzde": ocl_sonuc["yuzde"],
                 "hatalar": ocl_sonuc["hatalar"],
                 "uyarilar": ocl_sonuc["uyarilar"]
             },
