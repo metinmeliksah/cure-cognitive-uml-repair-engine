@@ -17,11 +17,14 @@ def extract_srs_entities(srs_metni: str) -> dict:
     
     # İlişki kalıpları
     iliski_patterns = [
-        r'\b(\w+)\s+uses?\s+(\w+)\b',
-        r'\b(\w+)\s+manages?\s+(\w+)\b',
-        r'\b(\w+)\s+extends?\s+(\w+)\b',
-        r'\b(\w+)\s+contains?\s+(\w+)\b',
-        r'\b(\w+)\s+handles?\s+(\w+)\b',
+        r'\b(\w+)\s+uses?\s+(?:the\s+)?(\w+)\b',
+        r'\b(\w+)\s+manages?\s+(?:the\s+)?(\w+)\b',
+        r'\b(\w+)\s+extends?\s+(?:the\s+)?(\w+)\b',
+        r'\b(\w+)\s+contains?\s+(?:the\s+)?(\w+)\b',
+        r'\b(\w+)\s+handles?\s+(?:the\s+)?(\w+)\b',
+        r'\b(\w+)\s+communicates?\s+with\s+(?:the\s+)?(\w+)\b',
+        r'\b(\w+)\s+sends?\s+(?:the\s+)?(\w+)\b',
+        r'\b(\w+)\s+stores?\s+(?:the\s+)?(\w+)\b',
     ]
     iliskiler = set()
     for pat in iliski_patterns:
@@ -60,14 +63,14 @@ def hesapla_f1(tahmin: set, gercek: set) -> dict:
         return {"precision": 1.0, "recall": 1.0, "f1": 1.0}
     if not gercek:
         return {"precision": 0.0, "recall": 0.0, "f1": 0.0}
-
+    
     def to_str(x):
         if isinstance(x, str):
             return x.lower()
         return "_".join(str(i).lower() for i in x)
-    # Büyük/küçük harf farkını görmezden gel
-    tahmin_lower = {t.lower() for t in tahmin}
-    gercek_lower = {g.lower() for g in gercek}
+    
+    tahmin_lower = {to_str(t) for t in tahmin}
+    gercek_lower = {to_str(g) for g in gercek}
     
     kesisim = len(tahmin_lower & gercek_lower)
     precision = kesisim / len(tahmin_lower) if tahmin_lower else 0.0
@@ -80,7 +83,6 @@ def hesapla_f1(tahmin: set, gercek: set) -> dict:
         "recall": round(recall, 3),
         "f1": round(f1, 3)
     }
-
 def semantik_sadakat_skoru(srs_metni: str, plantuml_kodu: str) -> dict:
     """
     IEEE/ISO 29148 standartlarına göre semantik sadakat değerlendirmesi.

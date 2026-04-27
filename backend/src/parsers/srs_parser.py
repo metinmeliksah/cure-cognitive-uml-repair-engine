@@ -3,13 +3,15 @@ from typing import Optional
 
 # Yazılım gereksinim belgelerinde sık geçen ilişki kalıpları
 RELATIONSHIP_PATTERNS = [
-    (r'(\w+)\s+(?:uses?|utilizes?)\s+(\w+)', 'uses'),
-    (r'(\w+)\s+(?:extends?|inherits?)\s+(\w+)', 'extends'),
-    (r'(\w+)\s+(?:implements?)\s+(\w+)', 'implements'),
-    (r'(\w+)\s+(?:contains?|has)\s+(?:a|an|one|many)?\s*(\w+)', 'has'),
-    (r'(\w+)\s+(?:manages?|handles?)\s+(\w+)', 'manages'),
-    (r'(\w+)\s+(?:creates?|generates?)\s+(\w+)', 'creates'),
-    (r'(\w+)\s+(?:communicates? with|connects? to)\s+(\w+)', 'connects'),
+    (r'(\w+)\s+(?:uses?|utilizes?)\s+(?:the\s+)?(\w+)', 'uses'),
+    (r'(\w+)\s+(?:extends?|inherits?)\s+(?:the\s+)?(\w+)', 'extends'),
+    (r'(\w+)\s+(?:implements?)\s+(?:the\s+)?(\w+)', 'implements'),
+    (r'(\w+)\s+(?:contains?|has)\s+(?:a|an|one|many|the)?\s*(\w+)', 'has'),
+    (r'(\w+)\s+(?:manages?|handles?)\s+(?:the\s+)?(\w+)', 'manages'),
+    (r'(\w+)\s+(?:creates?|generates?)\s+(?:the\s+)?(\w+)', 'creates'),
+    (r'(\w+)\s+(?:communicates?\s+with|connects?\s+to)\s+(?:the\s+)?(\w+)', 'connects'),
+    (r'(\w+)\s+(?:sends?|notifies?)\s+(?:the\s+)?(\w+)', 'sends'),
+    (r'(\w+)\s+(?:stores?|retrieves?)\s+(?:the\s+)?(\w+)', 'stores'),
 ]
 
 # İngilizce stop word listesi (bunlar sınıf adı olamaz)
@@ -70,8 +72,15 @@ def extract_relationships(text: str, classes: list) -> list:
     for pattern, rel_type in RELATIONSHIP_PATTERNS:
         matches = re.findall(pattern, text, re.IGNORECASE)
         for src, tgt in matches:
-            src_clean = src.strip().capitalize()
-            tgt_clean = tgt.strip().capitalize()
+            src_clean = src.strip()
+            tgt_clean = tgt.strip()
+            # Sınıf listesinde büyük/küçük harf farkı olmadan ara
+            src_match = next((c for c in classes if c.lower() == src_clean.lower()), None)
+            tgt_match = next((c for c in classes if c.lower() == tgt_clean.lower()), None)
+            if not src_match or not tgt_match:
+                continue
+            src_clean = src_match
+            tgt_clean = tgt_match
             if (src_clean.lower() in class_set 
                     and tgt_clean.lower() in class_set
                     and src_clean != tgt_clean):
