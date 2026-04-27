@@ -9,7 +9,10 @@ def extract_srs_entities(srs_metni: str) -> dict:
     # Stop words temizle
     stop = {'The','This','These','That','When','Where','Which','Each',
             'All','Any','Some','Both','For','And','But','Or','Not',
-            'With','From','Into','Upon','After','Before'}
+            'With','From','Into','Upon','After','Before',
+            'the','this','these','that','when','where','which','each',
+            'all','any','some','both','for','and','but','or','not',
+            'with','from','into','upon','after','before'}
     siniflar = {s for s in siniflar if s not in stop and len(s) > 3}
     
     # İlişki kalıpları
@@ -57,7 +60,11 @@ def hesapla_f1(tahmin: set, gercek: set) -> dict:
         return {"precision": 1.0, "recall": 1.0, "f1": 1.0}
     if not gercek:
         return {"precision": 0.0, "recall": 0.0, "f1": 0.0}
-    
+
+    def to_str(x):
+        if isinstance(x, str):
+            return x.lower()
+        return "_".join(str(i).lower() for i in x)
     # Büyük/küçük harf farkını görmezden gel
     tahmin_lower = {t.lower() for t in tahmin}
     gercek_lower = {g.lower() for g in gercek}
