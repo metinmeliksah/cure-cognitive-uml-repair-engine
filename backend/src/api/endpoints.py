@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import Optional, List
@@ -84,7 +85,8 @@ def ana_sayfa():
         "endpoints": [
             "/generate-uml", "/api/parse", "/api/render", "/api/validate",
             "/api/evaluate", "/api/analyze", "/api/iterate",
-            "/api/autonomous-repair", "/api/error-log", "/api/performance", "/health"
+            "/api/autonomous-repair", "/api/error-log", "/api/performance",
+            "/api/demo-diagram", "/health"
         ]
     }
 
@@ -93,6 +95,63 @@ def ana_sayfa():
 def saglik_kontrolu():
     """Sunumda ilk gosterilecek endpoint: backend ayakta mi kontrol eder."""
     return {"durum": "aktif", "versiyon": "1.0.0"}
+
+
+@app.get("/api/demo-diagram", response_class=HTMLResponse)
+def demo_diagram_goster():
+    """
+    Sunum icin tarayicida dogrudan gorsel UML diyagrami gosterir.
+    Swagger JSON response SVG'yi metin olarak gosterdigi icin bu endpoint HTML sayfasi dondurur.
+    """
+    ornek_metin = (
+        "The UserManager handles user authentication. "
+        "The DiagramService generates PlantUML diagrams. "
+        "The UserManager uses the DiagramService."
+    )
+    sonuc = srs_to_plantuml(ornek_metin)
+    render = render_plantuml(sonuc["plantuml_kodu"])
+    return f"""
+    <!doctype html>
+    <html lang="tr">
+      <head>
+        <meta charset="utf-8">
+        <title>CURE UML Demo Diagram</title>
+        <style>
+          body {{
+            margin: 0;
+            padding: 32px;
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+          }}
+          .panel {{
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            padding: 24px;
+          }}
+          pre {{
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 6px;
+            overflow: auto;
+          }}
+        </style>
+      </head>
+      <body>
+        <div class="panel">
+          <h1>CURE UML Demo Diagram</h1>
+          <p>Bu sayfa backend'in urettigi PlantUML kodundan hazirlanan SVG diyagramini gorsel olarak gosterir.</p>
+          {render["svg"]}
+          <h2>Uretilen PlantUML</h2>
+          <pre>{sonuc["plantuml_kodu"]}</pre>
+        </div>
+      </body>
+    </html>
+    """
 
 
 def _basit_healer(plantuml_kodu: str) -> str:
