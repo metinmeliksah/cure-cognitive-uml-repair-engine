@@ -2,6 +2,7 @@ import pandas as pd
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceBgeEmbeddings
 from langchain_community.vectorstores import Chroma
+import torch
 
 print("1. PURE Veri Seti (pure_dataset.csv) okunuyor...")
 try:
@@ -22,9 +23,11 @@ chunks = text_splitter.create_documents(temiz_veriler)
 print("3. Embedding Modeli yükleniyor...")
 print("DİKKAT: 7219 satırın matematiksel vektörlere çevrilmesi bilgisayarının hızına göre 5-15 dakika sürebilir. LÜTFEN BEKLE, program donmadı arka planda çalışıyor!")
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
 embeddings = HuggingFaceBgeEmbeddings(
     model_name="BAAI/bge-small-en-v1.5",
-    model_kwargs={'device': 'cpu'},
+    model_kwargs={'device': device},
     encode_kwargs={'normalize_embeddings': True}
 )
 

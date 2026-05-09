@@ -6,6 +6,7 @@ from typing import Optional, List
 import sys, os, time
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'ai_core', 'src'))
 from parsers.srs_parser import srs_to_plantuml
 from evaluators.semantic_eval import semantik_sadakat_skoru
 from ocl_engine.ocl_validator import ocl_dogrula
@@ -13,7 +14,7 @@ from ocl_engine.error_handler import hata_normalize_et, plantuml_syntax_kontrol,
 from renderers.plantuml_renderer import render_plantuml
 from api.error_log_endpoint import router as error_log_router, hata_kaydet, HataLogGirdisi
 from api.performance import olcum_kaydet, performans_raporu, olcumleri_sifirla
-
+from ai.agent_workflow import UMLMultiAgentSystem
 
 # FastAPI uygulamasinin ana giris noktasi.
 # Swagger ekraninda gorunen tum backend endpointleri bu app uzerinden yayinlanir.
@@ -300,7 +301,7 @@ def iterasyon_testi(girdi: IterasyonGirdisi):
     if girdi.iterasyon_no > MAX_ITERASYON:
         raise HTTPException(
             status_code=400,
-            detail=f"Maksimum iterasyon sayisi asild: {MAX_ITERASYON}"
+            detail=f"Maksimum iterasyon sayisi aşıldı: {MAX_ITERASYON}"
         )
 
     baslangic = time.time()
@@ -356,44 +357,57 @@ def iterasyon_testi(girdi: IterasyonGirdisi):
 @app.post("/api/autonomous-repair")
 def otonom_onarim(girdi: OtonomOnarimGirdisi):
     """
-    CP3 final akisidir.
-    En fazla 3 iterasyonda compile test, hata loglama, basit onarim ve final render uretir.
+    Gerçek AI (Healer/Critic) ajanını kullanan otonom onarım akışı.
     """
     baslangic = time.time()
     aktif_kod = girdi.plantuml_kodu
-    iterasyonlar: List[dict] = []
+    
+    # Başlangıç durumu kontrolü
+    compile_sonuc = _compile_test(aktif_kod)
+    iterasyonlar = []
 
-    for iterasyon_no in range(1, girdi.max_iterasyon + 1):
-        # Her turda mevcut UML compile testinden geciyor mu diye bakilir.
-        compile_sonuc = _compile_test(aktif_kod)
-        durum = "COMPILE_OK" if compile_sonuc["basarili"] else "HEALER_REQUIRED"
-        iterasyon_kaydi = {
-            "iteration_no": iterasyon_no,
-            "status": durum,
-            "compile_result": compile_sonuc,
-            "fix_summary": None,
-        }
+    iterasyonlar.append({
+        "iteration_no": 1,
+        "status": "COMPILE_OK" if compile_sonuc["basarili"] else "HEALER_REQUIRED",
+        "compile_result": compile_sonuc,
+        "fix_summary": "İlk derleme testi (Orijinal UML)"
+    })
 
-        if compile_sonuc["basarili"]:
-            # Compile basariliysa dongu erken biter ve final diyagram hazirlanir.
-            iterasyonlar.append(iterasyon_kaydi)
-            break
+    # Eğer kodda hata varsa, LangGraph AI Ajanını devreye sok
+    if not compile_sonuc["basarili"]:
+        try:
+            # Multi-Agent sistemi başlatılıyor
+            agent = UMLMultiAgentSystem()
+            
+            # Eğer SRS metni boş gelirse varsayılan bir prompt veriyoruz
+            srs_metni = girdi.srs_metni if girdi.srs_metni else "Verilen UML kodunu OCL ve sözdizimi kurallarına uygun şekilde onar."
+            
+            # Ajan kendi içerisindeki 3 iterasyonluk döngüyü çalıştırıp en iyi sonucu döner
+            aktif_kod = agent.run(original_text=srs_metni, initial_uml=aktif_kod)
+            
+            # Ajanın çıktısı tekrar test ediliyor
+            yeni_compile = _compile_test(aktif_kod)
+            iterasyonlar.append({
+                "iteration_no": 2,
+                "status": "AI_HEALER_APPLIED",
+                "compile_result": yeni_compile,
+                "fix_summary": "LangGraph Multi-Agent sistemi ile otonom onarım uygulandı."
+            })
+            
+            # Başarısızlık devam ediyorsa logla
+            if not yeni_compile["basarili"]:
+                hata_kaydet(HataLogGirdisi(
+                    kategori="AI_HEALER_FAILED",
+                    mesaj="Ajan onarımı sonrası hatalar devam ediyor: " + "; ".join(yeni_compile["syntax"]["hatalar"] or yeni_compile["ocl"]["hatalar"]),
+                    plantuml_kodu=aktif_kod,
+                    iterasyon_no=2,
+                    skor=yeni_compile["ocl"]["skor"]
+                ))
+                
+        except Exception as e:
+            exception_logla(e, "/api/autonomous-repair - AI Ajan Hatası")
 
-        # Basarisiz denemeler hata log sistemine kaydedilir.
-        hata_kaydet(HataLogGirdisi(
-            kategori="SYNTAX",
-            mesaj="; ".join(compile_sonuc["syntax"]["hatalar"] or compile_sonuc["ocl"]["hatalar"]),
-            plantuml_kodu=aktif_kod,
-            iterasyon_no=iterasyon_no,
-            skor=compile_sonuc["ocl"]["skor"],
-        ))
-
-        onceki = aktif_kod
-        aktif_kod = _basit_healer(aktif_kod)
-        iterasyon_kaydi["fix_summary"] = "Eksik PlantUML etiketleri veya bos diyagram sinifi tamamlandi"
-        iterasyon_kaydi["changed"] = onceki != aktif_kod
-        iterasyonlar.append(iterasyon_kaydi)
-
+    # Final Değerlendirmeleri
     final_compile = _compile_test(aktif_kod)
     semantik = semantik_sadakat_skoru(girdi.srs_metni, aktif_kod) if girdi.srs_metni else None
     sure = round(time.time() - baslangic, 3)
@@ -406,7 +420,7 @@ def otonom_onarim(girdi: OtonomOnarimGirdisi):
         "sla_gecti_mi": sure < 15,
         "max_iterasyon": girdi.max_iterasyon,
         "iterasyonlar": iterasyonlar,
-        "final_plantuml": aktif_kod if basarili else None,
+        "final_plantuml": aktif_kod,
         "final_render": render_plantuml(aktif_kod) if basarili else None,
         "final_compile": final_compile,
         "semantik": semantik,

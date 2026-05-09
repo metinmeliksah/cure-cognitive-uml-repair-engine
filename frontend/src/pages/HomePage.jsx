@@ -2,7 +2,7 @@ import { useState } from 'react';
 import FileUpload from '../components/FileUpload';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Alert from '../components/Alert';
-import { uploadFile, processDocument } from '../services/api';
+import { analyzeDocument } from '../services/api';
 import { ArrowRight } from 'lucide-react';
 
 const SRS_ACCEPT = {
@@ -53,11 +53,19 @@ const HomePage = () => {
     setUmlUploadError('');
 
     try {
-      const uploadResult = await uploadFile(srsFile, umlFile);
+      // 1. Yüklenen dosyanın içindeki metni okuyoruz
+      const srsMetni = await srsFile.text();
 
-      await processDocument(uploadResult.fileId);
+      if (umlFile) {
+        console.log('Seçili UML dosyası:', umlFile.name);
+      }
 
-      setSuccess('Dosyalar başarıyla yüklendi ve işleme alındı!');
+      // 2. Metni backend'e analiz için gönderiyoruz
+      const result = await analyzeDocument(srsMetni);
+
+      setSuccess('Dosya başarıyla işlendi! (Sonuçlar konsola yazdırıldı)');
+      console.log("Backend'den Gelen Cevap:", result);
+      
       setSrsFile(null);
       setUmlFile(null);
       setUploadResetKey((k) => k + 1);
