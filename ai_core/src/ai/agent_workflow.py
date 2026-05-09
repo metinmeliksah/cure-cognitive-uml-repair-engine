@@ -4,7 +4,7 @@ from typing import TypedDict, List
 from langgraph.graph import StateGraph, END
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
-from src.rag.ocl_retriever import OCLRetrieverEngine
+from rag.ocl_retriever import OCLRetrieverEngine
 
 # Loglama entegrasyonu[cite: 2]
 logging.basicConfig(filename='agent_workflow.log', level=logging.INFO, 
