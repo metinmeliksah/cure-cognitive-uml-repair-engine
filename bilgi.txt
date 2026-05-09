@@ -1,0 +1,39 @@
+cure_project/
+│
+├── frontend/                   # Metin Melikşah Dermencioğlu'nun sorumluluk alanı.
+│   ├── public/
+│   ├── src/
+│   │   ├── components/         # UI bileşenleri (Diyagram yükleme, Hata Raporu kartları).
+│   │   ├── pages/              # Ana sayfalar. Kullanım kolaylığı için max 3 tıklama akışı[cite: 133].
+│   │   ├── services/           # Backend ve AI servisleriyle haberleşecek API çağrıları.
+│   │   └── utils/              # Renk kodları ve görselleştirme yardımcı fonksiyonları.
+│   ├── package.json
+│   └── .env.local
+│
+├── backend/                    # Zeynep Karataş'ın sorumluluk alanı.
+│   ├── src/
+│   │   ├── api/                # Frontend'den gelen istekleri (REST/GraphQL) karşılayan uç noktalar.
+│   │   ├── parsers/            # Gereksinimleri ve UML'leri PlantUML/JSON/DSL formatlarına ayrıştırma (parsing)[cite: 44, 138].
+│   │   ├── ocl_engine/         # OCL kısıtlarının biçimsel olarak modellenmesi ve doğrulanması[cite: 45].
+│   │   └── evaluators/         # IEEE/ISO 29148 standartlarına dayalı Semantik Sadakat testleri[cite: 28, 138].
+│   ├── tests/                  # Birim ve entegrasyon testleri.
+│   └── requirements.txt        # Backend bağımlılıkları (örn. FastAPI, Flask veya Node.js/Express).
+│
+├── ai_core/                    # Buğrahan Gökkaya'nın sorumluluk alanı. (Önceki adımda detaylandırdığımız yapı)
+│   ├── src/
+│   │   ├── ai/                 # LangGraph, Eleştirmen ve Onarıcı etmenlerin mimarisi.
+│   │   ├── rag/                # Dinamik bağlam geri çağırma (retrieval) ve context injection[cite: 21].
+│   │   └── llm/                # Model bağlantıları ve prompt mühendisliği (Intent Conflict çözümü)[cite: 41].
+│   └── requirements.txt        # LangChain, LangGraph, Pydantic vb.
+│
+├── data_pipeline/              # Aydın Doğan'ın sorumluluk alanı.
+│   ├── datasets/               # PURE ve PROMISE NFR gibi kullanılacak standart veri setleri[cite: 25, 26, 27].
+│   ├── preprocessing/          # PURE veri setini temizleme ve ön işleme scriptleri.
+│   ├── vector_db/              # OCL kısıt kurallarının RAG altyapısı için vektör veritabanına aktarılması.
+│   └── evaluation/             # Model çıktıları için otomatik değerlendirme (evaluation) workflow'ları[cite: 49].
+│
+├── docs/                       # Proje dokümantasyonu, yazılım gereksinim belgeleri (SRS), toplantı notları.
+│
+├── .gitignore                  # Git'e eklenmeyecek dosyalar (örn: .env, node_modules, __pycache__).
+├── docker-compose.yml          # Tüm alt sistemleri (Frontend, Backend, Vektör DB) tek tuşla ayağa kaldırmak için.
+└── README.md                   # Projenin genel kurulum ve kullanım talimatları.
