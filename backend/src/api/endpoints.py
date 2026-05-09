@@ -6,7 +6,7 @@ from typing import Optional, List
 import sys, os, time
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'ai_core', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'ai_core', 'src'))
 from parsers.srs_parser import srs_to_plantuml
 from evaluators.semantic_eval import semantik_sadakat_skoru
 from ocl_engine.ocl_validator import ocl_dogrula
