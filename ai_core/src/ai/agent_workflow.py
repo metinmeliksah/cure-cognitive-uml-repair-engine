@@ -23,6 +23,9 @@ class WorkflowState(TypedDict):
 class UMLMultiAgentSystem:
     def __init__(self, model_name="gpt-4o-mini", temperature=0):
         self.llm = ChatOpenAI(model=model_name, temperature=temperature)
+
+        #RAG modülü başlatılıyor
+        self.retriever = OCLRetrieverEngine()
         
         # Critic hata tespit promptu [cite: 2]
         self.critic_prompt = PromptTemplate(
