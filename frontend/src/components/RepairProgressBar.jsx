@@ -1,5 +1,17 @@
 import { CheckCircle, Loader, Circle } from 'lucide-react';
-import { REPAIR_PHASES_ORDERED, REPAIR_STATUS } from '../data/mockData';
+
+const REPAIR_PHASES_ORDERED = [
+  { key: 'ANALIZ',        label: 'Analiz',       description: 'OCL kuralları ile diyagram taranıyor' },
+  { key: 'ONARIM',        label: 'Onarım',        description: 'Healer ajanı düzeltmeleri uyguluyor' },
+  { key: 'DERLEME_TESTI', label: 'Derleme Testi', description: 'Compile testi çalıştırılıyor' },
+  { key: 'TAMAMLANDI',    label: 'Tamamlandı',    description: 'İterasyon sonuçlandı' },
+];
+
+const REPAIR_STATUS = {
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+  IN_PROGRESS: 'IN_PROGRESS',
+};
 
 /**
  * Otonom onarım sürecinin iterasyon bazlı ilerleme çubuğu.

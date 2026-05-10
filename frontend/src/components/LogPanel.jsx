@@ -8,7 +8,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import StatusBadge from './StatusBadge';
-import { formatTimestamp } from '../data/mockData';
+import { formatTimestamp } from '../utils';
 
 const JOB_STATUS_ICON = {
   COMPLETED: CheckCircle,

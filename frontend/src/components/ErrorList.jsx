@@ -10,7 +10,7 @@ import {
   GitBranch,
 } from 'lucide-react';
 import StatusBadge from './StatusBadge';
-import { formatTimestamp } from '../data/mockData';
+import { formatTimestamp } from '../utils';
 
 const TYPE_ICONS = {
   HALLUCINATION: AlertTriangle,
