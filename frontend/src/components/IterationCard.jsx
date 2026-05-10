@@ -9,9 +9,22 @@ import {
   Code,
   BookOpen,
 } from 'lucide-react';
-import { REPAIR_STATUS, ERROR_TYPES } from '../data/mockData';
+import { formatTimestamp } from '../utils';
 import StatusBadge from './StatusBadge';
-import { formatTimestamp } from '../data/mockData';
+
+const ERROR_TYPES = {
+  HALLUCINATION: 'HALLUCINATION',
+  DESIGN_SMELL: 'DESIGN_SMELL',
+  SYNTAX_ERROR: 'SYNTAX_ERROR',
+  MISSING_ELEMENT: 'MISSING_ELEMENT',
+  INCONSISTENCY: 'INCONSISTENCY',
+};
+
+const REPAIR_STATUS = {
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+  IN_PROGRESS: 'IN_PROGRESS',
+};
 
 const ERROR_TYPE_LABEL = {
   [ERROR_TYPES.HALLUCINATION]: 'Halüsinasyon',

@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import FileUpload from '../components/FileUpload';
-import LoadingSpinner from '../components/LoadingSpinner';
 import Alert from '../components/Alert';
 import { analyzeDocument } from '../services/api';
-import { ArrowRight } from 'lucide-react';
+import { saveToHistory } from '../utils';
+import { ArrowRight, Cpu, ShieldCheck, Zap, FileSearch } from 'lucide-react';
 
 const SRS_ACCEPT = {
   'text/plain': ['.txt'],
@@ -16,29 +16,49 @@ const UML_ACCEPT = {
   'text/plain': ['.puml', '.plantuml'],
 };
 
-const HomePage = () => {
+const FEATURES = [
+  {
+    icon: FileSearch,
+    title: 'SRS Analizi',
+    desc: 'Gereksinim belgenizi NLP ile işler, sınıf ve ilişkileri otomatik çıkarır.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'OCL Doğrulama',
+    desc: 'Object Constraint Language kurallarıyla diyagramınızı katı biçimde doğrular.',
+  },
+  {
+    icon: Cpu,
+    title: 'Otonom Onarım',
+    desc: 'Çoklu-etmen AI sistemi halüsinasyon ve tutarsızlıkları tespit edip düzeltir.',
+  },
+  {
+    icon: Zap,
+    title: 'Anında Sonuç',
+    desc: 'İşlem süresi genellikle 15 saniyenin altındadır; SLA garantili.',
+  },
+];
+
+const HomePage = ({ onNavigate }) => {
   const [srsFile, setSrsFile] = useState(null);
   const [umlFile, setUmlFile] = useState(null);
   const [uploadResetKey, setUploadResetKey] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [srsUploadError, setSrsUploadError] = useState('');
   const [umlUploadError, setUmlUploadError] = useState('');
 
-  const handleSrsSelect = (selectedFile, err = '') => {
-    setSrsFile(selectedFile);
+  const handleSrsSelect = useCallback((file, err = '') => {
+    setSrsFile(file);
     setSrsUploadError(err);
     setError('');
-    setSuccess('');
-  };
+  }, []);
 
-  const handleUmlSelect = (selectedFile, err = '') => {
-    setUmlFile(selectedFile);
+  const handleUmlSelect = useCallback((file, err = '') => {
+    setUmlFile(file);
     setUmlUploadError(err);
     setError('');
-    setSuccess('');
-  };
+  }, []);
 
   const handleSubmit = async () => {
     if (!srsFile) {
@@ -48,29 +68,40 @@ const HomePage = () => {
 
     setLoading(true);
     setError('');
-    setSuccess('');
-    setSrsUploadError('');
-    setUmlUploadError('');
 
     try {
-      // 1. Yüklenen dosyanın içindeki metni okuyoruz
       const srsMetni = await srsFile.text();
-
+      let umlMetni = null;
       if (umlFile) {
-        console.log('Seçili UML dosyası:', umlFile.name);
+        umlMetni = await umlFile.text();
       }
 
-      // 2. Metni backend'e analiz için gönderiyoruz
+      // Tam analiz pipeline'ı çağır
       const result = await analyzeDocument(srsMetni);
 
-      setSuccess('Dosya başarıyla işlendi! (Sonuçlar konsola yazdırıldı)');
-      console.log("Backend'den Gelen Cevap:", result);
-      
+      // Geçmişe kaydet (localStorage)
+      saveToHistory({
+        id: `job_${Date.now()}`,
+        timestamp: new Date().toISOString(),
+        document: srsFile.name,
+        srs_metni: srsMetni,
+        result,
+      });
+
+      // Dosyaları sıfırla
       setSrsFile(null);
       setUmlFile(null);
       setUploadResetKey((k) => k + 1);
+
+      // Sonuçlar sayfasına geç ve analiz verisini aktar
+      onNavigate('results', {
+        result,
+        srs_metni: srsMetni,
+        uml_metni: umlMetni,
+        document_name: srsFile.name,
+      });
     } catch (err) {
-      setError(err || 'Bir hata oluştu. Lütfen tekrar deneyin.');
+      setError(typeof err === 'string' ? err : 'Bir hata oluştu. Lütfen tekrar deneyin.');
     } finally {
       setLoading(false);
     }
@@ -79,16 +110,24 @@ const HomePage = () => {
   return (
     <div className="page home-page">
       <div className="container">
-        <div className="content-card">
-          <div className="card-header">
-            <h2>Akıllı UML Onarım Platformu</h2>
-            <p>
-              Yazılım Gereksinim Spesifikasyonu (SRS) belgenizi yükleyin. İsterseniz elinizdeki mevcut UML
-              çıktısını (XMI veya PlantUML) ekleyerek onarımı bu modele göre yönlendirebilirsiniz. Sistem,
-              belgeyi ve varsa mevcut diyagramı birlikte analiz ederek hataları tespit edip düzeltir.
-            </p>
+        {/* Hero */}
+        <div className="home-hero">
+          <div className="home-hero__badge">
+            <Cpu size={14} />
+            <span>AI Destekli UML Onarım</span>
           </div>
+          <h2 className="home-hero__title">
+            SRS'den Doğrulanmış<br />
+            <span className="gradient-text">UML'ye</span>
+          </h2>
+          <p className="home-hero__sub">
+            Yazılım gereksinim belgenizi yükleyin — sistem OCL kuralları ve çoklu-etmen AI
+            ile UML diyagramınızı otomatik üretir, doğrular ve onarır.
+          </p>
+        </div>
 
+        {/* Upload kartı */}
+        <div className="content-card upload-card">
           <div className="upload-stack">
             <FileUpload
               key={`srs-${uploadResetKey}`}
@@ -96,7 +135,7 @@ const HomePage = () => {
               error={srsUploadError}
               loading={loading}
               accept={SRS_ACCEPT}
-              title="SRS belgesi"
+              title="SRS Belgesi"
               emptyDescription="SRS dosyanızı (.txt veya .pdf) sürükleyip bırakın veya seçmek için tıklayın"
               fileHint="Zorunlu · En fazla 10 MB"
               invalidTypeMessage="SRS için yalnızca .txt ve .pdf kabul edilir"
@@ -116,58 +155,53 @@ const HomePage = () => {
           </div>
 
           {error && (
-            <Alert 
-              type="error" 
-              message={error} 
-              onClose={() => setError('')}
-            />
-          )}
-
-          {success && (
-            <Alert 
-              type="success" 
-              message={success} 
-              onClose={() => setSuccess('')}
-            />
+            <Alert type="error" message={error} onClose={() => setError('')} />
           )}
 
           {loading ? (
-            <LoadingSpinner message="Dosyalar yükleniyor ve işleniyor..." />
+            <div className="analyze-loading">
+              <div className="analyze-loading__bar">
+                <div className="analyze-loading__fill" />
+              </div>
+              <div className="analyze-loading__steps">
+                <span className="step-chip step-chip--active">SRS Ayrıştırılıyor</span>
+                <span className="step-chip">UML Üretiliyor</span>
+                <span className="step-chip">OCL Doğrulanıyor</span>
+                <span className="step-chip">Semantik Analiz</span>
+              </div>
+              <p className="analyze-loading__msg">
+                Bu işlem 5-15 saniye sürebilir, lütfen bekleyin…
+              </p>
+            </div>
           ) : (
-            <button 
-              onClick={handleSubmit} 
-              className="btn btn-primary"
+            <button
+              onClick={handleSubmit}
+              className="btn btn-primary btn-analyze"
               disabled={!srsFile}
+              id="analyze-btn"
             >
-              <span>İşleme Başla</span>
+              <span>Analizi Başlat</span>
               <ArrowRight size={20} />
             </button>
           )}
         </div>
 
-        <div className="info-section">
-          <h3>Sistem Nasıl Çalışır?</h3>
-          <div className="info-grid info-grid--four">
-            <div className="info-card">
-              <div className="info-number">1</div>
-              <h4>Girdi</h4>
-              <p>SRS belgenizi yükleyin; varsa mevcut UML’inizi (XMI veya PlantUML) ekleyin</p>
-            </div>
-            <div className="info-card">
-              <div className="info-number">2</div>
-              <h4>Analiz</h4>
-              <p>Belge ve isteğe bağlı UML birlikte değerlendirilir; model çıkarımı ve karşılaştırma yapılır</p>
-            </div>
-            <div className="info-card">
-              <div className="info-number">3</div>
-              <h4>Onarım</h4>
-              <p>Çoklu-etmen yapı halüsinasyon ve tutarsızlıkları tespit edip düzeltir</p>
-            </div>
-            <div className="info-card">
-              <div className="info-number">4</div>
-              <h4>Sonuç</h4>
-              <p>OCL ile doğrulanmış, güncellenmiş UML çıktılarına erişin</p>
-            </div>
+        {/* Özellik kartları */}
+        <div className="features-section">
+          <h3 className="features-title">Sistem Nasıl Çalışır?</h3>
+          <div className="features-grid">
+            {FEATURES.map((f, i) => {
+              const Icon = f.icon;
+              return (
+                <div className="feature-card" key={i}>
+                  <div className="feature-card__icon">
+                    <Icon size={24} />
+                  </div>
+                  <h4>{f.title}</h4>
+                  <p>{f.desc}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
