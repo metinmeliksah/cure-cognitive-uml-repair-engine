@@ -45,6 +45,22 @@ STOP_WORDS = {
     'request','response','message','error','status','code',
     'name','date','time','number','version','level','mode',
     'active','current','new','old','base','core','main',
+    # Dokuman basliklari / bolumleri
+    'requirements','functional','performance','security','overview',
+    'introduction','scope','purpose','high','real','smart','management',
+}
+
+FALLBACK_STOP_WORDS = {
+    # Turkce baglac ve zamirler
+    've','veya','ile','icin','için','olan','olarak','her','bir','bu','şu','su',
+    'gibi','ileti','iletişim','daha','cok','çok','az','en','mi','mu','mı','mü',
+    # Genel belgelerde gecen kelimeler
+    'sistem','modul','modül','gereksinim','gereksinimler','belge','dokuman','döküman',
+    'kullanici','kullanıcı','veri','bilgi','islem','işlem','durum','kayit','kayıt',
+    'olmalı','olmalidir','olmalıdır','bulunur','bulunmalıdır','yapilir','yapılır',
+    'saglar','sağlar','yonetir','yönetir','karsilar','karşılar',
+    'performans','guvenlik','güvenlik','fonksiyonel','nonfunctional',
+    'giris','çıkış','cikis','yükleme','yukleme','rapor','raporlama',
 }
 
 # Teknik sınıf son ekleri — bunları içeren kelimeler büyük ihtimalle sınıftır
@@ -55,6 +71,7 @@ CLASS_SUFFIXES = (
     'Executor','Scheduler','Adapter','Provider','Client',
     'Server','Gateway','Proxy','Registry','Store','Cache',
     'Dispatcher','Observer','Listener','Notifier','Sender',
+    'System',
 )
 
 def is_valid_class(word: str) -> bool:
@@ -86,13 +103,25 @@ def extract_classes(text: str) -> list:
             if is_valid_class(word):
                 candidates[word] = candidates.get(word, 0) + 3  # yüksek skor
 
-    # 2. Orta güven: CamelCase (birden fazla büyük harf içeren)
+    # 2. Orta guven: Baslik gibi Title Case ifadeler
+    title_case_pattern = r'\b([A-Z][a-zA-ZÀ-ÿĞğİıÖöŞşÜüÇç]+(?:\s+[A-Z][a-zA-ZÀ-ÿĞğİıÖöŞşÜüÇç]+)+)\b'
+    for match in re.finditer(title_case_pattern, text):
+        phrase = match.group(1)
+        words = phrase.split()
+        lowered = [w.lower() for w in words]
+        if all(w in STOP_WORDS or w in FALLBACK_STOP_WORDS for w in lowered):
+            continue
+        class_name = "".join(words)
+        if is_valid_class(class_name):
+            candidates[class_name] = candidates.get(class_name, 0) + 2
+
+    # 3. Orta guven: CamelCase (birden fazla büyük harf içeren)
     for match in re.finditer(r'\b([A-Z][a-z]+(?:[A-Z][a-z]+)+)\b', text):
         word = match.group(1)
         if is_valid_class(word):
             candidates[word] = candidates.get(word, 0) + 2
 
-    # 3. Düşük güven: büyük harfle başlayan tekil kelimeler (3+ tekrar edenler)
+    # 4. Dusuk guven: buyuk harfle baslayan tekil kelimeler (3+ tekrar edenler)
     singles = re.findall(r'\b([A-Z][a-zA-Z]{3,})\b', text)
     freq = {}
     for w in singles:
@@ -104,6 +133,134 @@ def extract_classes(text: str) -> list:
     # Skora göre sırala, max 12 sınıf
     sorted_classes = sorted(candidates.items(), key=lambda x: -x[1])
     return [w for w, _ in sorted_classes[:12]]
+
+
+def _looks_like_binary(text: str) -> bool:
+    if not text:
+        return False
+    if text.lstrip().startswith("%PDF-"):
+        return True
+    non_printable = 0
+    for ch in text[:2000]:
+        if ch in "\n\r\t":
+            continue
+        if not ch.isprintable():
+            non_printable += 1
+    return non_printable > 20
+
+
+def extract_fallback_classes(text: str) -> list:
+    """
+    PascalCase bulunamadiginda, sik gecen anlamli kelimelerden sinif adlari uretir.
+    """
+    tokens = re.findall(r"[A-Za-zÀ-ÿĞğİıÖöŞşÜüÇç]+", text)
+    freq = {}
+    for token in tokens:
+        lower = token.lower()
+        if lower in STOP_WORDS or lower in FALLBACK_STOP_WORDS:
+            continue
+        if len(lower) < 4:
+            continue
+        freq[lower] = freq.get(lower, 0) + 1
+
+    sorted_tokens = sorted(freq.items(), key=lambda x: (-x[1], x[0]))
+    classes = []
+    for word, count in sorted_tokens:
+        has_suffix = any(word.endswith(suffix.lower()) for suffix in [s.lower() for s in CLASS_SUFFIXES])
+        if count < 2 and not has_suffix:
+            continue
+        class_name = word[:1].upper() + word[1:]
+        if class_name not in classes:
+            classes.append(class_name)
+        if len(classes) >= 8:
+            break
+    return classes
+
+
+def _normalize_member_name(name: str) -> Optional[str]:
+    cleaned = re.sub(r"[^A-Za-z0-9_]+", "_", name).strip("_")
+    if not cleaned or len(cleaned) < 3:
+        return None
+    if cleaned.lower() in STOP_WORDS or cleaned.lower() in FALLBACK_STOP_WORDS:
+        return None
+    return cleaned
+
+
+def extract_features_for_classes(text: str, classes: list) -> dict:
+    """
+    Basit ozellik ve metot cikartma: sinif adini iceren cumlelerden ipucu toplar.
+    """
+    sentences = re.split(r"[\n\.\!\?]+", text)
+    features = {cls: {"attributes": set(), "methods": set()} for cls in classes}
+
+    attr_patterns = [
+        r"\bhas\b\s+(?:a|an|the)?\s*([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bcontains\b\s+(?:a|an|the)?\s*([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bincludes?\b\s+(?:a|an|the)?\s*([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bstores?\b\s+(?:a|an|the)?\s*([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bretrieves?\b\s+(?:a|an|the)?\s*([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bkeeps?\b\s+(?:a|an|the)?\s*([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bmaintains?\b\s+(?:a|an|the)?\s*([A-Za-z_][A-Za-z0-9_]*)",
+        r"\b([A-Za-z_][A-Za-z0-9_]*)\s+(?:attribute|field|property|ozelligi|özelliği)\b",
+        r"\b([A-Za-z_][A-Za-z0-9_]*)\s+(?:bulunur|bulunmalı|bulunmalidir|bulunmalıdır)\b",
+        r"\b([A-Za-z_][A-Za-z0-9_]*)\s+(?:alanı|alani)\b",
+        r"\b([A-Za-z_][A-Za-z0-9_]*)\s+(?:saklanir|saklanır|tutulur|tutulur)\b",
+    ]
+
+    method_patterns = [
+        r"\bhandles?\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bmanages?\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bcreates?\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bgenerates?\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bvalidates?\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bprocesses?\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bsends?\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bupdates?\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bdeletes?\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bcalculates?\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bnotifies?\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bconnects?\b\s+(?:to\s+)?([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bcommunicates?\b\s+(?:with\s+)?([A-Za-z_][A-Za-z0-9_]*)",
+        r"\byönetir\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bolusturur\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\boluşturur\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bgonderir\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bgönderir\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bdogrular\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+        r"\bdoğrular\b\s+([A-Za-z_][A-Za-z0-9_]*)",
+    ]
+
+    for cls in classes:
+        cls_lower = cls.lower()
+        for sentence in sentences:
+            if cls_lower not in sentence.lower():
+                continue
+
+            for pattern in attr_patterns:
+                for match in re.findall(pattern, sentence, re.IGNORECASE):
+                    name = _normalize_member_name(match)
+                    if name:
+                        features[cls]["attributes"].add(name)
+
+            for pattern in method_patterns:
+                for match in re.findall(pattern, sentence, re.IGNORECASE):
+                    name = _normalize_member_name(match)
+                    if name:
+                        features[cls]["methods"].add(name)
+
+        # Sinif icin maksimum sayilari sinirla
+        features[cls]["attributes"] = set(list(sorted(features[cls]["attributes"]))[:4])
+        features[cls]["methods"] = set(list(sorted(features[cls]["methods"]))[:4])
+
+        # Hicbir sey bulunamadiysa sinif adina gore minimal uyeler ekle
+        if not features[cls]["attributes"] and not features[cls]["methods"]:
+            base = re.sub(r"(Service|Manager|Controller|Repository|Handler|Engine|System)$", "", cls)
+            base = base or cls
+            base_lower = base[:1].lower() + base[1:]
+            features[cls]["attributes"] = {f"{base_lower}Id"}
+            features[cls]["methods"] = {f"get{base}", f"update{base}"}
+
+    return features
 
 
 def extract_relationships(text: str, classes: list) -> list:
@@ -141,12 +298,20 @@ def extract_relationships(text: str, classes: list) -> list:
     return relationships
 
 
-def generate_plantuml(classes: list, relationships: list) -> str:
+def generate_plantuml(classes: list, relationships: list, class_features: Optional[dict] = None) -> str:
     """Sınıf ve ilişkilerden PlantUML kodu üretir."""
     lines = ["@startuml", "skinparam classAttributeIconSize 0", ""]
 
+    class_features = class_features or {}
+
     for cls in classes:
         lines.append(f"class {cls} {{")
+        attrs = sorted(class_features.get(cls, {}).get("attributes", []))
+        methods = sorted(class_features.get(cls, {}).get("methods", []))
+        for attr in attrs:
+            lines.append(f"  +{attr}: String")
+        for method in methods:
+            lines.append(f"  +{method}()")
         lines.append("}")
         lines.append("")
 
@@ -178,10 +343,24 @@ def srs_to_plantuml(srs_metni: str) -> dict:
             "hata": "Metin çok kısa veya boş"
         }
 
+    if _looks_like_binary(srs_metni):
+        return {
+            "plantuml_kodu": "@startuml\n@enduml",
+            "bulunan_siniflar": [],
+            "iliskiler": [],
+            "sinif_sayisi": 0,
+            "hata": "PDF metni çözümlenemedi. Lütfen PDF'ten metni çıkarıp tekrar deneyin."
+        }
+
     try:
         classes = extract_classes(srs_metni)
+        if not classes:
+            classes = extract_fallback_classes(srs_metni)
+        if not classes:
+            classes = ["GeneratedDiagram"]
         relationships = extract_relationships(srs_metni, classes)
-        plantuml = generate_plantuml(classes, relationships)
+        features = extract_features_for_classes(srs_metni, classes)
+        plantuml = generate_plantuml(classes, relationships, features)
 
         return {
             "plantuml_kodu": plantuml,

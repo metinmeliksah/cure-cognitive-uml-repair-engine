@@ -5,6 +5,45 @@ import { analyzeDocument } from '../services/api';
 import { saveToHistory } from '../utils';
 import { ArrowRight, Cpu, ShieldCheck, Zap, FileSearch } from 'lucide-react';
 
+let pdfWorkerConfigured = false;
+
+const ensurePdfWorker = async (pdfjs) => {
+  if (pdfWorkerConfigured) return;
+  const workerSrc = (await import('pdfjs-dist/legacy/build/pdf.worker?url')).default;
+  pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
+  pdfWorkerConfigured = true;
+};
+
+const extractTextFromPdf = async (file) => {
+  const pdfjs = await import('pdfjs-dist/legacy/build/pdf');
+  await ensurePdfWorker(pdfjs);
+
+  const data = new Uint8Array(await file.arrayBuffer());
+  const pdf = await pdfjs.getDocument({ data }).promise;
+  let text = '';
+
+  for (let pageNum = 1; pageNum <= pdf.numPages; pageNum += 1) {
+    const page = await pdf.getPage(pageNum);
+    const content = await page.getTextContent();
+    const strings = content.items.map((item) => item.str).filter(Boolean);
+    text += `${strings.join(' ')}\n`;
+  }
+
+  return text.trim();
+};
+
+const readSrsFile = async (file) => {
+  const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+  if (isPdf) {
+    const extracted = await extractTextFromPdf(file);
+    if (!extracted) {
+      throw new Error('PDF icinde okunabilir metin bulunamadi.');
+    }
+    return extracted;
+  }
+  return (await file.text()).trim();
+};
+
 const SRS_ACCEPT = {
   'text/plain': ['.txt'],
   'application/pdf': ['.pdf'],
@@ -70,7 +109,10 @@ const HomePage = ({ onNavigate }) => {
     setError('');
 
     try {
-      const srsMetni = await srsFile.text();
+      const srsMetni = await readSrsFile(srsFile);
+      if (!srsMetni) {
+        throw new Error('SRS metni bos geldi. Lutfen baska bir dosya deneyin.');
+      }
       let umlMetni = null;
       if (umlFile) {
         umlMetni = await umlFile.text();

@@ -19,6 +19,10 @@ STOP_WORDS = {
     'Active','Current','New','Old','Base','Core','Main',
     'active','current','new','old','base','core','main',
     'Database','Server','Client','Interface',
+    'Requirements','Functional','Performance','Security','Overview',
+    'Introduction','Scope','Purpose','High','Real','Smart','Management',
+    'requirements','functional','performance','security','overview',
+    'introduction','scope','purpose','high','real','smart','management',
 }
 
 CLASS_SUFFIXES = (
@@ -27,7 +31,7 @@ CLASS_SUFFIXES = (
     'Factory','Builder','Monitor','Analyzer','Evaluator',
     'Executor','Scheduler','Adapter','Provider','Gateway',
     'Proxy','Registry','Store','Cache','Dispatcher',
-    'Observer','Listener','Notifier','Sender',
+    'Observer','Listener','Notifier','Sender','System',
 )
 
 RELATIONSHIP_PATTERNS = [
@@ -76,6 +80,36 @@ def extract_srs_entities(srs_metni: str) -> dict:
         if is_valid_srs_class(w) and w not in candidates:
             candidates[w] = candidates.get(w, 0) + 2
 
+    # Title Case ifadeleri birlestir
+    title_case_pattern = r'\b([A-Z][a-zA-ZÀ-ÿĞğİıÖöŞşÜüÇç]+(?:\s+[A-Z][a-zA-ZÀ-ÿĞğİıÖöŞşÜüÇç]+)+)\b'
+    for m in re.finditer(title_case_pattern, srs_metni):
+        phrase = m.group(1)
+        words = phrase.split()
+        lowered = [w.lower() for w in words]
+        if all(w in {s.lower() for s in STOP_WORDS} for w in lowered):
+            continue
+        class_name = "".join(words)
+        if is_valid_srs_class(class_name):
+            candidates[class_name] = candidates.get(class_name, 0) + 2
+
+    # Fallback: tekrar eden anlamli kelimeler
+    tokens = re.findall(r"[A-Za-zÀ-ÿĞğİıÖöŞşÜüÇç]+", srs_metni)
+    freq = {}
+    stop_lower = {s.lower() for s in STOP_WORDS}
+    for token in tokens:
+        lower = token.lower()
+        if lower in stop_lower or len(lower) < 4:
+            continue
+        freq[lower] = freq.get(lower, 0) + 1
+
+    for word, count in sorted(freq.items(), key=lambda x: (-x[1], x[0])):
+        has_suffix = any(word.endswith(suffix.lower()) for suffix in [s.lower() for s in CLASS_SUFFIXES])
+        if count < 2 and not has_suffix:
+            continue
+        class_name = word[:1].upper() + word[1:]
+        if is_valid_srs_class(class_name) and class_name not in candidates:
+            candidates[class_name] = candidates.get(class_name, 0) + 1
+
     siniflar = set(candidates.keys())
 
     # İlişkiler
@@ -123,8 +157,8 @@ def hesapla_f1(tahmin: set, gercek: set) -> dict:
 
     def normalize(x):
         if isinstance(x, str):
-            return x.lower()
-        return "_".join(str(i).lower() for i in x)
+            return re.sub(r"\W+", "", x.lower())
+        return "_".join(re.sub(r"\W+", "", str(i).lower()) for i in x)
 
     tahmin_n = {normalize(t) for t in tahmin}
     gercek_n = {normalize(g) for g in gercek}
