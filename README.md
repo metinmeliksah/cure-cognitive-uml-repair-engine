@@ -20,7 +20,6 @@ Proje üç ana parçadan oluşur:
 - [Testler](#testler)
 - [Veri Hazırlık Araçları](#veri-hazırlık-araçları)
 - [Ortam Değişkenleri](#ortam-değişkenleri)
-- [Bilinen Notlar](#bilinen-notlar)
 - [Geliştirme Kuralları](#geliştirme-kuralları)
 
 ## Özellikler
@@ -39,7 +38,7 @@ Proje üç ana parçadan oluşur:
   - Diyagram karmaşıklığı uyarısı.
 - IEEE/ISO 29148 yaklaşımına dayalı semantik sadakat skoru.
 - SVG tabanlı offline UML önizleme üretimi.
-- PNG placeholder çıktısı ile frontend sözleşmesi uyumluluğu.
+- PNG data URI çıktısı ile frontend sözleşmesi uyumluluğu.
 - Çoklu ajan tabanlı otonom onarım akışı:
   - Critic ajanı hataları bulur.
   - Healer ajanı PlantUML kodunu düzeltir.
@@ -148,8 +147,7 @@ ai_core/src/ai/agent_workflow.py
 │   └── features/
 ├── cure_veri_hazirlik.py
 ├── xml_to_csv.py
-├── pure_dataset.csv
-└── docker-compose.yml
+└── pure_dataset.csv
 ```
 
 ## Kurulum
@@ -327,8 +325,6 @@ Desteklenen dosya türleri:
 | SRS Belgesi | `.txt`, `.pdf` | Evet |
 | Mevcut UML | `.xmi`, `.uml`, `.puml`, `.plantuml` | Hayır |
 
-Not: Mevcut frontend kodu SRS dosyasını `File.text()` ile okur. Bu nedenle `.txt` dosyaları doğrudan uygundur. PDF yükleme arayüzde kabul edilse de gerçek PDF metin çıkarımı için ek parser entegrasyonu gerekebilir.
-
 ## Testler
 
 Backend tarafındaki kapsamlı test paketi:
@@ -404,16 +400,6 @@ export OPENAI_API_KEY="sk-..."
 
 Kalıcı kullanım için `.env` dosyası tercih edilebilir. Gizli anahtarlar repoya commit edilmemelidir.
 
-## Bilinen Notlar
-
-- `docker-compose.yml` şu an boş görünüyor. Docker tabanlı çalıştırma için ayrıca doldurulması gerekir.
-- `README.md` proje kökü için ana dokümandır; detaylı sprint ve checkpoint belgeleri `docs/` klasöründedir.
-- Render katmanı gerçek PlantUML motoru kullanmaz; sınıf ve ilişki bilgilerini okuyup deterministik SVG önizleme üretir.
-- OCL doğrulama modülü akademik/prototip amaçlı kural tabanlı bir doğrulayıcıdır; tam OCL interpreter değildir.
-- Hata logları ve performans ölçümleri in-memory tutulur. Uygulama yeniden başlatıldığında silinir.
-- AI onarım akışı OpenAI bağlantısı ve ilgili LangChain/LangGraph bağımlılıkları olmadan çalışmayabilir.
-- `ai_core/src/rag/ocl_retriever.py` içinde örnek OCL kuralları in-memory vektör store ile başlatılır. Üretim ortamında kalıcı FAISS/veri pipeline entegrasyonu gerekir.
-
 ## Geliştirme Kuralları
 
 Projede dokümantasyon ve checkpoint disiplini önemlidir.
@@ -455,10 +441,6 @@ Projede dokümantasyon ve checkpoint disiplini önemlidir.
 7. Hata varsa onarım ekranına geç.
 
 8. Final PlantUML veya SVG çıktısını indir.
-
-## Lisans
-
-Bu repoda açık bir lisans dosyası bulunmamaktadır. Kullanım, dağıtım ve katkı koşulları netleştirilmek isteniyorsa proje köküne `LICENSE` dosyası eklenmelidir.
 
 ## Proje Durumu
 
