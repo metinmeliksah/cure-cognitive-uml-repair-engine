@@ -1,0 +1,21 @@
+case_id,category,description,expected_final_success,final_success,expectation_matched,iteration_count,elapsed_seconds,final_errors,final_warnings,final_percent
+R01,missing_startuml,Missing @startuml around one class,True,True,True,1,0.001664,,,%100.0
+R02,missing_enduml,Missing @enduml around one class,True,True,True,1,0.000333,,,%100.0
+R03,missing_both_boundaries,Missing both PlantUML boundaries,True,True,True,1,0.000264,,,%100.0
+R04,empty_diagram,Empty PlantUML diagram,True,True,True,1,0.00026,,,%100.0
+R05,plain_empty_input,Plain empty input,True,True,True,1,0.000247,,,%100.0
+R06,missing_startuml_with_relation,Missing @startuml with two related classes,True,True,True,1,0.0006,,,%100.0
+R07,missing_enduml_with_relation,Missing @enduml with two related classes,True,True,True,1,0.000663,,,%100.0
+R08,missing_both_with_relation,Missing both boundaries with relation,True,True,True,1,0.000615,,,%100.0
+R09,only_start_token,Only @startuml token,True,True,True,1,0.000293,,,%100.0
+R10,only_end_token,Only @enduml token,True,True,True,1,0.000283,,,%100.0
+R11,comment_only,Comment-only diagram body,True,True,True,1,0.000342,,,%100.0
+R12,missing_startuml_pascal_warning,Missing start with lowercase warning only,True,True,True,1,0.000465,,Sinif isimlendirme kurali ihlali (PascalCase olmali): ['userManager'],%95.0
+R13,missing_enduml_isolated_warning,Missing end with isolated-class warning only,True,True,True,1,0.000483,,"Izole sinif: hicbir iliskisi yok: ['UserManager', 'DiagramService']",%95.0
+R14,missing_both_god_class_warning,Missing boundaries with God Class warning,True,True,True,1,0.000473,,God Class: sinif cok fazla metot iceriyor (>10): HugeService (11 metot),%95.0
+R15,whitespace_empty,Whitespace-only input,True,True,True,1,0.000258,,,%100.0
+R16,duplicate_class,Duplicate class remains unsupported,False,False,True,1,0.000477,Tekrar eden sinif ismi: ['UserManager'],"Izole sinif: hicbir iliskisi yok: ['UserManager', 'UserManager']",%75.0
+R17,duplicate_class_missing_start,Duplicate class with missing start remains unsupported,False,False,True,2,0.000666,Tekrar eden sinif ismi: ['UserManager'],"Izole sinif: hicbir iliskisi yok: ['UserManager', 'UserManager']",%75.0
+R18,duplicate_class_missing_end,Duplicate class with missing end remains unsupported,False,False,True,2,0.000782,Tekrar eden sinif ismi: ['DiagramService'],"Izole sinif: hicbir iliskisi yok: ['DiagramService', 'DiagramService']",%75.0
+R19,duplicate_lowercase,Duplicate lowercase class remains unsupported,False,False,True,1,0.000389,Tekrar eden sinif ismi: ['userManager'],"Sinif isimlendirme kurali ihlali (PascalCase olmali): ['userManager', 'userManager']; Izole sinif: hicbir iliskisi yok: ['userManager', 'userManager']",%70.0
+R20,duplicate_with_relation,Duplicate class with relation remains unsupported,False,False,True,1,0.000739,Tekrar eden sinif ismi: ['AuthService'],,%80.0
