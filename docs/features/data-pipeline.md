@@ -7,8 +7,9 @@ CSV ve preprocessing scriptleri ilgili alt klasorlere tasindi.
 
 ## Amac
 
-Dataset, preprocessing, vector DB hazirligi ve manuel degerlendirme dosyalarini
-tekrar uretilebilir bir klasor yapisinda tutmak.
+Dataset, preprocessing ve vector DB hazirligi dosyalarini tekrar uretilebilir
+bir klasor yapisinda tutmak. Manuel degerlendirme notlari `docs/` altinda
+ayri izlenir.
 
 ## Kurulum
 
@@ -35,7 +36,7 @@ Mevcut scriptlerin kendi importlari kullanilir.
 - `data_pipeline/preprocessing/cure_veri_hazirlik.py`
 - `data_pipeline/preprocessing/xml_to_csv.py`
 - `data_pipeline/vector_db/README.md`
-- `data_pipeline/evaluation/ground_truth_manual_review.md`
+- `docs/ground_truth_manual_review.md`
 
 ## API
 
@@ -52,7 +53,8 @@ Scriptler kaynak veri ile calistirilip cikti CSV dosyalari kontrol edilir.
 ## Hata Senaryolari
 
 - Kaynak XML/CSV yoksa script dosya bulunamadi hatasi verir.
-- Manuel review tablosu guncellenmezse deney sonuclari akademik olarak izlenemez.
+- Manuel review tablosu bagimsiz ground truth gibi sunulmamalidir; yalnizca
+  sinirli kontrol notu olarak kullanilmalidir.
 
 ## Gelistiren
 
