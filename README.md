@@ -151,8 +151,9 @@ ai_core/src/ai/agent_workflow.py
 │   ├── preprocessing/
 │   │   ├── cure_veri_hazirlik.py
 │   │   └── xml_to_csv.py
-│   ├── vector_db/
-│   └── evaluation/
+│   └── vector_db/
+├── docs/
+│   └── ground_truth_manual_review.md
 ├── experiments/
 │   └── run_autonomous_repair.py
 └── results/
