@@ -35,6 +35,14 @@ def require_openai_key() -> bool:
     return False
 
 
+def repair_attempt_count(response: dict) -> int:
+    """Convert the internal agent counter to actual repair attempts."""
+    agent_count = response.get("agent_iteration_count")
+    if agent_count is not None:
+        return max(int(agent_count) - 1, 0)
+    return max(len(response["iterasyonlar"]) - 1, 0)
+
+
 def main() -> int:
     if not require_openai_key():
         return 2
@@ -60,7 +68,7 @@ def main() -> int:
                 "girdi_turu": case["girdi_turu"],
                 "basarili": response["basarili"],
                 "sure_saniye": response["sure_saniye"],
-                "iterasyon_sayisi": response.get("agent_iteration_count") or len(response["iterasyonlar"]),
+                "iterasyon_sayisi": repair_attempt_count(response),
             }
         )
         print(

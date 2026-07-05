@@ -35,6 +35,16 @@ def require_openai_key() -> bool:
     return False
 
 
+def successful_repair_iteration(response: dict):
+    """Convert the internal agent counter to a 1-based repair iteration."""
+    if not response["basarili"]:
+        return None
+    agent_count = response.get("agent_iteration_count")
+    if agent_count is None:
+        return None
+    return max(int(agent_count) - 1, 0)
+
+
 def main() -> int:
     if not require_openai_key():
         return 2
@@ -53,7 +63,7 @@ def main() -> int:
                 max_iterasyon=3,
             )
         )
-        success_iteration = response.get("agent_iteration_count") if response["basarili"] else None
+        success_iteration = successful_repair_iteration(response)
         rows.append(
             {
                 "case_id": case["case_id"],
