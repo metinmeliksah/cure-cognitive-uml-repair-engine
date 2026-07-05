@@ -21,7 +21,13 @@ class WorkflowState(TypedDict):
     iteration_count: int  
 
 class UMLMultiAgentSystem:
-    def __init__(self, model_name="gpt-4o-mini", temperature=0):
+    def __init__(self, model_name="gpt-4o-mini", temperature=0, max_iterations: int = 3):
+        if max_iterations < 1:
+            raise ValueError("max_iterations en az 1 olmalidir.")
+
+        self.max_iterations = max_iterations
+        self.last_final_state = None
+        self.llm_call_count = 0
         self.llm = ChatOpenAI(model=model_name, temperature=temperature)
 
         #RAG modülü başlatılıyor
@@ -67,6 +73,7 @@ class UMLMultiAgentSystem:
         logger.info(f"Critic'e sağlanan OCL kuralları: {relevant_rules}")
         
         # LLM'i çağırırken prompta 'ocl_rules' değişkenini de gönderiyoruz
+        self.llm_call_count += 1
         response = self.llm.invoke(
             self.critic_prompt.format(
                 original_text=state["original_text"], 
@@ -89,6 +96,7 @@ class UMLMultiAgentSystem:
 
     def healer_node(self, state: WorkflowState) -> WorkflowState:
         logger.info("Healer Node çalışıyor: UML onarılıyor...")
+        self.llm_call_count += 1
         response = self.llm.invoke(
             self.healer_prompt.format(current_uml=state["current_uml"], errors=json.dumps(state["errors"]))
         )
@@ -106,8 +114,8 @@ class UMLMultiAgentSystem:
             logger.info("Sistem başarılı. Süreç sonlandırılıyor.")
             return "end"
             
-        if state["iteration_count"] > 3:
-            logger.warning("Maksimum 3 iterasyon limitine ulaşıldı! Döngü kırılıyor.")
+        if state["iteration_count"] > self.max_iterations:
+            logger.warning(f"Maksimum {self.max_iterations} iterasyon limitine ulaşıldı! Döngü kırılıyor.")
             return "end"
             
         return "continue"
@@ -126,7 +134,7 @@ class UMLMultiAgentSystem:
         workflow.add_edge("Healer", "Critic")
         return workflow.compile()
 
-    def run(self, original_text: str, initial_uml: str):
+    def run(self, original_text: str, initial_uml: str, return_state: bool = False):
         logger.info("--- Otonom Döngü Başlatıldı ---")
         initial_state = WorkflowState(
             original_text=original_text,
@@ -137,4 +145,7 @@ class UMLMultiAgentSystem:
             iteration_count=1  # Sayaç 1'den başlar[cite: 2]
         )
         final_state = self.workflow.invoke(initial_state)
+        self.last_final_state = final_state
+        if return_state:
+            return final_state
         return final_state["current_uml"]
