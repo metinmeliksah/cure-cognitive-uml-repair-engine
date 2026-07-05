@@ -67,7 +67,7 @@ class OtonomOnarimGirdisi(BaseModel):
     # Max iterasyon 3 ile sinirli; bu sonsuz dongu riskini engeller.
     plantuml_kodu: str = Field(..., description="Onarilacak PlantUML kodu")
     srs_metni: Optional[str] = Field(None, description="Final semantik skor icin SRS metni")
-    max_iterasyon: int = Field(default=3, ge=1, le=3, description="Guvenli maksimum iterasyon")
+    max_iterasyon: int = Field(default=3, ge=1, le=5, description="Guvenli maksimum iterasyon")
 
 
 class PerformansOlcumGirdisi(BaseModel):
@@ -365,6 +365,9 @@ def otonom_onarim(girdi: OtonomOnarimGirdisi):
     # Başlangıç durumu kontrolü
     compile_sonuc = _compile_test(aktif_kod)
     iterasyonlar = []
+    agent_iteration_count = None
+    agent_is_valid = None
+    agent_llm_call_count = 0
 
     iterasyonlar.append({
         "iteration_no": 1,
@@ -377,13 +380,17 @@ def otonom_onarim(girdi: OtonomOnarimGirdisi):
     if not compile_sonuc["basarili"]:
         try:
             # Multi-Agent sistemi başlatılıyor
-            agent = UMLMultiAgentSystem()
+            agent = UMLMultiAgentSystem(max_iterations=girdi.max_iterasyon)
             
             # Eğer SRS metni boş gelirse varsayılan bir prompt veriyoruz
             srs_metni = girdi.srs_metni if girdi.srs_metni else "Verilen UML kodunu OCL ve sözdizimi kurallarına uygun şekilde onar."
             
             # Ajan kendi içerisindeki 3 iterasyonluk döngüyü çalıştırıp en iyi sonucu döner
             aktif_kod = agent.run(original_text=srs_metni, initial_uml=aktif_kod)
+            if agent.last_final_state:
+                agent_iteration_count = agent.last_final_state.get("iteration_count")
+                agent_is_valid = agent.last_final_state.get("is_valid")
+            agent_llm_call_count = agent.llm_call_count
             
             # Ajanın çıktısı tekrar test ediliyor
             yeni_compile = _compile_test(aktif_kod)
@@ -419,6 +426,9 @@ def otonom_onarim(girdi: OtonomOnarimGirdisi):
         "sure_saniye": sure,
         "sla_gecti_mi": sure < 15,
         "max_iterasyon": girdi.max_iterasyon,
+        "agent_iteration_count": agent_iteration_count,
+        "agent_is_valid": agent_is_valid,
+        "agent_llm_call_count": agent_llm_call_count,
         "iterasyonlar": iterasyonlar,
         "final_plantuml": aktif_kod,
         "final_render": render_plantuml(aktif_kod) if basarili else None,
