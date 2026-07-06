@@ -145,9 +145,18 @@ ai_core/src/ai/agent_workflow.py
 │   ├── checkpoint-week4.md
 │   ├── checkpoint-kullanim-rehberi.md
 │   └── features/
-├── cure_veri_hazirlik.py
-├── xml_to_csv.py
-└── pure_dataset.csv
+├── data_pipeline/
+│   ├── datasets/
+│   │   └── pure_dataset.csv
+│   ├── preprocessing/
+│   │   ├── cure_veri_hazirlik.py
+│   │   └── xml_to_csv.py
+│   └── vector_db/
+├── docs/
+│   └── ground_truth_manual_review.md
+├── experiments/
+│   └── run_autonomous_repair.py
+└── results/
 ```
 
 ## Kurulum
@@ -361,15 +370,22 @@ npm run build
 
 ## Veri Hazırlık Araçları
 
-Repo kökünde veri hazırlık için iki yardımcı script bulunur:
+Veri hazırlık dosyaları `data_pipeline/` altında toplanmıştır:
 
-- `xml_to_csv.py`: XML tabanlı veri kaynaklarını CSV formatına dönüştürmek için kullanılır.
-- `cure_veri_hazirlik.py`: CURE veri hazırlık akışında kullanılan yardımcı script.
+- `data_pipeline/preprocessing/xml_to_csv.py`: XML tabanlı veri kaynaklarını CSV formatına dönüştürmek için kullanılır.
+- `data_pipeline/preprocessing/cure_veri_hazirlik.py`: CURE veri hazırlık akışında kullanılan yardımcı script.
 
 Ana veri dosyası:
 
 ```text
-pure_dataset.csv
+data_pipeline/datasets/pure_dataset.csv
+```
+
+Otonom onarım deneylerini tekrar üretmek için:
+
+```bash
+python experiments/run_autonomous_repair.py --max-iterasyon 3
+python ai_core/log_analiz.py results/autonomous_repair_results.json
 ```
 
 ## Ortam Değişkenleri

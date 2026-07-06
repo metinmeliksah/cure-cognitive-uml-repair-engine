@@ -1,0 +1,1359 @@
+{
+  "metadata": {
+    "run_id": "aa37598e-a614-4ad3-a0ae-858ce90344eb",
+    "generated_at_utc": "2026-07-06T23:32:07.203374+00:00",
+    "repository_path": "C:\\Users\\zeyne\\Documents\\Codex\\2026-07-06\\metinmeliksah-cure-cognitive-uml-repair-engine-2\\work\\cure-cognitive-uml-repair-engine",
+    "python": "3.12.13 (main, Mar  3 2026, 15:01:35) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "scope": "backend/src/ocl_engine structural validation and deterministic local repair",
+    "repair_engine": "deterministic_backend_repair; no LLM or external API calls",
+    "max_iterations": 3
+  },
+  "summary": {
+    "total_cases": 20,
+    "successful_repairs": 15,
+    "failed_repairs": 5,
+    "success_rate": 0.75,
+    "success_rate_percent": 75.0,
+    "expectation_matches": 20
+  },
+  "wilson_95_ci": {
+    "successes": 15,
+    "total": 20,
+    "rate": 0.75,
+    "lower": 0.5313,
+    "upper": 0.8881,
+    "lower_percent": 53.1,
+    "upper_percent": 88.8,
+    "z": 1.96
+  },
+  "cases": [
+    {
+      "case_id": "R01",
+      "category": "missing_startuml",
+      "description": "Missing @startuml around one class",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.00119,
+      "initial_plantuml": "class UserManager {}\n@enduml",
+      "final_plantuml": "@startuml\nclass UserManager {}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 1,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "class UserManager {}\n@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.8,
+            "percent": "%80.0",
+            "errors": [
+              "@startuml etiketi eksik",
+              "@startuml etiketi eksik"
+            ],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_startuml"
+          ],
+          "output_plantuml": "@startuml\nclass UserManager {}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R02",
+      "category": "missing_enduml",
+      "description": "Missing @enduml around one class",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000183,
+      "initial_plantuml": "@startuml\nclass UserManager {}",
+      "final_plantuml": "@startuml\nclass UserManager {}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 1,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "@startuml\nclass UserManager {}",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.8,
+            "percent": "%80.0",
+            "errors": [
+              "@enduml etiketi eksik",
+              "@enduml etiketi eksik"
+            ],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_enduml"
+          ],
+          "output_plantuml": "@startuml\nclass UserManager {}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R03",
+      "category": "missing_both_boundaries",
+      "description": "Missing both PlantUML boundaries",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000221,
+      "initial_plantuml": "class DiagramService {}",
+      "final_plantuml": "@startuml\nclass DiagramService {}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 1,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "class DiagramService {}",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.6,
+            "percent": "%60.0",
+            "errors": [
+              "@startuml etiketi eksik",
+              "@enduml etiketi eksik",
+              "@startuml etiketi eksik",
+              "@enduml etiketi eksik"
+            ],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_startuml",
+            "added_missing_enduml"
+          ],
+          "output_plantuml": "@startuml\nclass DiagramService {}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R04",
+      "category": "empty_diagram",
+      "description": "Empty PlantUML diagram",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000195,
+      "initial_plantuml": "@startuml\n@enduml",
+      "final_plantuml": "@startuml\nclass GeneratedDiagram {}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 1,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "@startuml\n@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.8,
+            "percent": "%80.0",
+            "errors": [
+              "Hic sinif tanimlanmamis",
+              "Hic sinif tanimlanmamis"
+            ],
+            "warnings": [],
+            "class_count": 0,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "inserted_generated_class_for_empty_diagram"
+          ],
+          "output_plantuml": "@startuml\nclass GeneratedDiagram {}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R05",
+      "category": "plain_empty_input",
+      "description": "Plain empty input",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000184,
+      "initial_plantuml": "",
+      "final_plantuml": "@startuml\n\nclass GeneratedDiagram {}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 1,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.4,
+            "percent": "%40.0",
+            "errors": [
+              "@startuml etiketi eksik",
+              "@enduml etiketi eksik",
+              "Hic sinif tanimlanmamis",
+              "@startuml etiketi eksik",
+              "@enduml etiketi eksik",
+              "Hic sinif tanimlanmamis"
+            ],
+            "warnings": [],
+            "class_count": 0,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_startuml",
+            "added_missing_enduml",
+            "inserted_generated_class_for_empty_diagram"
+          ],
+          "output_plantuml": "@startuml\n\nclass GeneratedDiagram {}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R06",
+      "category": "missing_startuml_with_relation",
+      "description": "Missing @startuml with two related classes",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000415,
+      "initial_plantuml": "class UserManager {}\nclass DiagramService {}\nUserManager --> DiagramService\n@enduml",
+      "final_plantuml": "@startuml\nclass UserManager {}\nclass DiagramService {}\nUserManager --> DiagramService\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 2,
+        "relationship_count": 1
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "class UserManager {}\nclass DiagramService {}\nUserManager --> DiagramService\n@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.8,
+            "percent": "%80.0",
+            "errors": [
+              "@startuml etiketi eksik",
+              "@startuml etiketi eksik"
+            ],
+            "warnings": [],
+            "class_count": 2,
+            "relationship_count": 1
+          },
+          "repair_actions": [
+            "added_missing_startuml"
+          ],
+          "output_plantuml": "@startuml\nclass UserManager {}\nclass DiagramService {}\nUserManager --> DiagramService\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 2,
+            "relationship_count": 1
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R07",
+      "category": "missing_enduml_with_relation",
+      "description": "Missing @enduml with two related classes",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000397,
+      "initial_plantuml": "@startuml\nclass ParserService {}\nclass ReportService {}\nParserService --> ReportService",
+      "final_plantuml": "@startuml\nclass ParserService {}\nclass ReportService {}\nParserService --> ReportService\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 2,
+        "relationship_count": 1
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "@startuml\nclass ParserService {}\nclass ReportService {}\nParserService --> ReportService",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.8,
+            "percent": "%80.0",
+            "errors": [
+              "@enduml etiketi eksik",
+              "@enduml etiketi eksik"
+            ],
+            "warnings": [],
+            "class_count": 2,
+            "relationship_count": 1
+          },
+          "repair_actions": [
+            "added_missing_enduml"
+          ],
+          "output_plantuml": "@startuml\nclass ParserService {}\nclass ReportService {}\nParserService --> ReportService\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 2,
+            "relationship_count": 1
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R08",
+      "category": "missing_both_with_relation",
+      "description": "Missing both boundaries with relation",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000304,
+      "initial_plantuml": "class AuthService {}\nclass UserRepository {}\nAuthService --> UserRepository",
+      "final_plantuml": "@startuml\nclass AuthService {}\nclass UserRepository {}\nAuthService --> UserRepository\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 2,
+        "relationship_count": 1
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "class AuthService {}\nclass UserRepository {}\nAuthService --> UserRepository",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.6,
+            "percent": "%60.0",
+            "errors": [
+              "@startuml etiketi eksik",
+              "@enduml etiketi eksik",
+              "@startuml etiketi eksik",
+              "@enduml etiketi eksik"
+            ],
+            "warnings": [],
+            "class_count": 2,
+            "relationship_count": 1
+          },
+          "repair_actions": [
+            "added_missing_startuml",
+            "added_missing_enduml"
+          ],
+          "output_plantuml": "@startuml\nclass AuthService {}\nclass UserRepository {}\nAuthService --> UserRepository\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 2,
+            "relationship_count": 1
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R09",
+      "category": "only_start_token",
+      "description": "Only @startuml token",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000134,
+      "initial_plantuml": "@startuml",
+      "final_plantuml": "@startuml\nclass GeneratedDiagram {}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 1,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "@startuml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.6,
+            "percent": "%60.0",
+            "errors": [
+              "@enduml etiketi eksik",
+              "Hic sinif tanimlanmamis",
+              "@enduml etiketi eksik",
+              "Hic sinif tanimlanmamis"
+            ],
+            "warnings": [],
+            "class_count": 0,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_enduml",
+            "inserted_generated_class_for_empty_diagram"
+          ],
+          "output_plantuml": "@startuml\nclass GeneratedDiagram {}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R10",
+      "category": "only_end_token",
+      "description": "Only @enduml token",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000123,
+      "initial_plantuml": "@enduml",
+      "final_plantuml": "@startuml\nclass GeneratedDiagram {}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 1,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.6,
+            "percent": "%60.0",
+            "errors": [
+              "@startuml etiketi eksik",
+              "Hic sinif tanimlanmamis",
+              "@startuml etiketi eksik",
+              "Hic sinif tanimlanmamis"
+            ],
+            "warnings": [],
+            "class_count": 0,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_startuml",
+            "inserted_generated_class_for_empty_diagram"
+          ],
+          "output_plantuml": "@startuml\nclass GeneratedDiagram {}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R11",
+      "category": "comment_only",
+      "description": "Comment-only diagram body",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000162,
+      "initial_plantuml": "@startuml\n' comment\n@enduml",
+      "final_plantuml": "@startuml\n' comment\nclass GeneratedDiagram {}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 1,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "@startuml\n' comment\n@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.8,
+            "percent": "%80.0",
+            "errors": [
+              "Hic sinif tanimlanmamis",
+              "Hic sinif tanimlanmamis"
+            ],
+            "warnings": [],
+            "class_count": 0,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "inserted_generated_class_for_empty_diagram"
+          ],
+          "output_plantuml": "@startuml\n' comment\nclass GeneratedDiagram {}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R12",
+      "category": "missing_startuml_pascal_warning",
+      "description": "Missing start with lowercase warning only",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000229,
+      "initial_plantuml": "class userManager {}\n@enduml",
+      "final_plantuml": "@startuml\nclass userManager {}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 0.95,
+        "percent": "%95.0",
+        "errors": [],
+        "warnings": [
+          "Sinif isimlendirme kurali ihlali (PascalCase olmali): ['userManager']"
+        ],
+        "class_count": 1,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "class userManager {}\n@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.75,
+            "percent": "%75.0",
+            "errors": [
+              "@startuml etiketi eksik",
+              "@startuml etiketi eksik"
+            ],
+            "warnings": [
+              "Sinif isimlendirme kurali ihlali (PascalCase olmali): ['userManager']"
+            ],
+            "class_count": 1,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_startuml"
+          ],
+          "output_plantuml": "@startuml\nclass userManager {}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 0.95,
+            "percent": "%95.0",
+            "errors": [],
+            "warnings": [
+              "Sinif isimlendirme kurali ihlali (PascalCase olmali): ['userManager']"
+            ],
+            "class_count": 1,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R13",
+      "category": "missing_enduml_isolated_warning",
+      "description": "Missing end with isolated-class warning only",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000223,
+      "initial_plantuml": "@startuml\nclass UserManager {}\nclass DiagramService {}",
+      "final_plantuml": "@startuml\nclass UserManager {}\nclass DiagramService {}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 0.95,
+        "percent": "%95.0",
+        "errors": [],
+        "warnings": [
+          "Izole sinif: hicbir iliskisi yok: ['UserManager', 'DiagramService']"
+        ],
+        "class_count": 2,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "@startuml\nclass UserManager {}\nclass DiagramService {}",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.75,
+            "percent": "%75.0",
+            "errors": [
+              "@enduml etiketi eksik",
+              "@enduml etiketi eksik"
+            ],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['UserManager', 'DiagramService']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_enduml"
+          ],
+          "output_plantuml": "@startuml\nclass UserManager {}\nclass DiagramService {}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 0.95,
+            "percent": "%95.0",
+            "errors": [],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['UserManager', 'DiagramService']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R14",
+      "category": "missing_both_god_class_warning",
+      "description": "Missing boundaries with God Class warning",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000202,
+      "initial_plantuml": "class HugeService {\n  +m1()\n  +m2()\n  +m3()\n  +m4()\n  +m5()\n  +m6()\n  +m7()\n  +m8()\n  +m9()\n  +m10()\n  +m11()\n}",
+      "final_plantuml": "@startuml\nclass HugeService {\n  +m1()\n  +m2()\n  +m3()\n  +m4()\n  +m5()\n  +m6()\n  +m7()\n  +m8()\n  +m9()\n  +m10()\n  +m11()\n}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 0.95,
+        "percent": "%95.0",
+        "errors": [],
+        "warnings": [
+          "God Class: sinif cok fazla metot iceriyor (>10): HugeService (11 metot)"
+        ],
+        "class_count": 1,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "class HugeService {\n  +m1()\n  +m2()\n  +m3()\n  +m4()\n  +m5()\n  +m6()\n  +m7()\n  +m8()\n  +m9()\n  +m10()\n  +m11()\n}",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.55,
+            "percent": "%55.0",
+            "errors": [
+              "@startuml etiketi eksik",
+              "@enduml etiketi eksik",
+              "@startuml etiketi eksik",
+              "@enduml etiketi eksik"
+            ],
+            "warnings": [
+              "God Class: sinif cok fazla metot iceriyor (>10): HugeService (11 metot)"
+            ],
+            "class_count": 1,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_startuml",
+            "added_missing_enduml"
+          ],
+          "output_plantuml": "@startuml\nclass HugeService {\n  +m1()\n  +m2()\n  +m3()\n  +m4()\n  +m5()\n  +m6()\n  +m7()\n  +m8()\n  +m9()\n  +m10()\n  +m11()\n}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 0.95,
+            "percent": "%95.0",
+            "errors": [],
+            "warnings": [
+              "God Class: sinif cok fazla metot iceriyor (>10): HugeService (11 metot)"
+            ],
+            "class_count": 1,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R15",
+      "category": "whitespace_empty",
+      "description": "Whitespace-only input",
+      "expected_final_success": true,
+      "final_success": true,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000123,
+      "initial_plantuml": "   \n   ",
+      "final_plantuml": "@startuml\n\nclass GeneratedDiagram {}\n@enduml",
+      "final_compile": {
+        "successful": true,
+        "syntax_valid": true,
+        "ocl_valid": true,
+        "score": 1.0,
+        "percent": "%100.0",
+        "errors": [],
+        "warnings": [],
+        "class_count": 1,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "   \n   ",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.4,
+            "percent": "%40.0",
+            "errors": [
+              "@startuml etiketi eksik",
+              "@enduml etiketi eksik",
+              "Hic sinif tanimlanmamis",
+              "@startuml etiketi eksik",
+              "@enduml etiketi eksik",
+              "Hic sinif tanimlanmamis"
+            ],
+            "warnings": [],
+            "class_count": 0,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_startuml",
+            "added_missing_enduml",
+            "inserted_generated_class_for_empty_diagram"
+          ],
+          "output_plantuml": "@startuml\n\nclass GeneratedDiagram {}\n@enduml",
+          "compile_after": {
+            "successful": true,
+            "syntax_valid": true,
+            "ocl_valid": true,
+            "score": 1.0,
+            "percent": "%100.0",
+            "errors": [],
+            "warnings": [],
+            "class_count": 1,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R16",
+      "category": "duplicate_class",
+      "description": "Duplicate class remains unsupported",
+      "expected_final_success": false,
+      "final_success": false,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.0002,
+      "initial_plantuml": "@startuml\nclass UserManager {}\nclass UserManager {}\n@enduml",
+      "final_plantuml": "@startuml\nclass UserManager {}\nclass UserManager {}\n@enduml",
+      "final_compile": {
+        "successful": false,
+        "syntax_valid": true,
+        "ocl_valid": false,
+        "score": 0.75,
+        "percent": "%75.0",
+        "errors": [
+          "Tekrar eden sinif ismi: ['UserManager']"
+        ],
+        "warnings": [
+          "Izole sinif: hicbir iliskisi yok: ['UserManager', 'UserManager']"
+        ],
+        "class_count": 2,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "@startuml\nclass UserManager {}\nclass UserManager {}\n@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.75,
+            "percent": "%75.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['UserManager']"
+            ],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['UserManager', 'UserManager']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "no_supported_repair_action"
+          ],
+          "output_plantuml": "@startuml\nclass UserManager {}\nclass UserManager {}\n@enduml",
+          "compile_after": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.75,
+            "percent": "%75.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['UserManager']"
+            ],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['UserManager', 'UserManager']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R17",
+      "category": "duplicate_class_missing_start",
+      "description": "Duplicate class with missing start remains unsupported",
+      "expected_final_success": false,
+      "final_success": false,
+      "expectation_matched": true,
+      "iteration_count": 2,
+      "elapsed_seconds": 0.000299,
+      "initial_plantuml": "class UserManager {}\nclass UserManager {}\n@enduml",
+      "final_plantuml": "@startuml\nclass UserManager {}\nclass UserManager {}\n@enduml",
+      "final_compile": {
+        "successful": false,
+        "syntax_valid": true,
+        "ocl_valid": false,
+        "score": 0.75,
+        "percent": "%75.0",
+        "errors": [
+          "Tekrar eden sinif ismi: ['UserManager']"
+        ],
+        "warnings": [
+          "Izole sinif: hicbir iliskisi yok: ['UserManager', 'UserManager']"
+        ],
+        "class_count": 2,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "class UserManager {}\nclass UserManager {}\n@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.55,
+            "percent": "%55.0",
+            "errors": [
+              "@startuml etiketi eksik",
+              "@startuml etiketi eksik",
+              "Tekrar eden sinif ismi: ['UserManager']"
+            ],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['UserManager', 'UserManager']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_startuml"
+          ],
+          "output_plantuml": "@startuml\nclass UserManager {}\nclass UserManager {}\n@enduml",
+          "compile_after": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.75,
+            "percent": "%75.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['UserManager']"
+            ],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['UserManager', 'UserManager']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          }
+        },
+        {
+          "iteration_no": 2,
+          "input_plantuml": "@startuml\nclass UserManager {}\nclass UserManager {}\n@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.75,
+            "percent": "%75.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['UserManager']"
+            ],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['UserManager', 'UserManager']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "no_supported_repair_action"
+          ],
+          "output_plantuml": "@startuml\nclass UserManager {}\nclass UserManager {}\n@enduml",
+          "compile_after": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.75,
+            "percent": "%75.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['UserManager']"
+            ],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['UserManager', 'UserManager']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R18",
+      "category": "duplicate_class_missing_end",
+      "description": "Duplicate class with missing end remains unsupported",
+      "expected_final_success": false,
+      "final_success": false,
+      "expectation_matched": true,
+      "iteration_count": 2,
+      "elapsed_seconds": 0.000563,
+      "initial_plantuml": "@startuml\nclass DiagramService {}\nclass DiagramService {}",
+      "final_plantuml": "@startuml\nclass DiagramService {}\nclass DiagramService {}\n@enduml",
+      "final_compile": {
+        "successful": false,
+        "syntax_valid": true,
+        "ocl_valid": false,
+        "score": 0.75,
+        "percent": "%75.0",
+        "errors": [
+          "Tekrar eden sinif ismi: ['DiagramService']"
+        ],
+        "warnings": [
+          "Izole sinif: hicbir iliskisi yok: ['DiagramService', 'DiagramService']"
+        ],
+        "class_count": 2,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "@startuml\nclass DiagramService {}\nclass DiagramService {}",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": false,
+            "ocl_valid": false,
+            "score": 0.55,
+            "percent": "%55.0",
+            "errors": [
+              "@enduml etiketi eksik",
+              "@enduml etiketi eksik",
+              "Tekrar eden sinif ismi: ['DiagramService']"
+            ],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['DiagramService', 'DiagramService']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "added_missing_enduml"
+          ],
+          "output_plantuml": "@startuml\nclass DiagramService {}\nclass DiagramService {}\n@enduml",
+          "compile_after": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.75,
+            "percent": "%75.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['DiagramService']"
+            ],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['DiagramService', 'DiagramService']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          }
+        },
+        {
+          "iteration_no": 2,
+          "input_plantuml": "@startuml\nclass DiagramService {}\nclass DiagramService {}\n@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.75,
+            "percent": "%75.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['DiagramService']"
+            ],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['DiagramService', 'DiagramService']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "no_supported_repair_action"
+          ],
+          "output_plantuml": "@startuml\nclass DiagramService {}\nclass DiagramService {}\n@enduml",
+          "compile_after": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.75,
+            "percent": "%75.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['DiagramService']"
+            ],
+            "warnings": [
+              "Izole sinif: hicbir iliskisi yok: ['DiagramService', 'DiagramService']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R19",
+      "category": "duplicate_lowercase",
+      "description": "Duplicate lowercase class remains unsupported",
+      "expected_final_success": false,
+      "final_success": false,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000207,
+      "initial_plantuml": "@startuml\nclass userManager {}\nclass userManager {}\n@enduml",
+      "final_plantuml": "@startuml\nclass userManager {}\nclass userManager {}\n@enduml",
+      "final_compile": {
+        "successful": false,
+        "syntax_valid": true,
+        "ocl_valid": false,
+        "score": 0.7,
+        "percent": "%70.0",
+        "errors": [
+          "Tekrar eden sinif ismi: ['userManager']"
+        ],
+        "warnings": [
+          "Sinif isimlendirme kurali ihlali (PascalCase olmali): ['userManager', 'userManager']",
+          "Izole sinif: hicbir iliskisi yok: ['userManager', 'userManager']"
+        ],
+        "class_count": 2,
+        "relationship_count": 0
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "@startuml\nclass userManager {}\nclass userManager {}\n@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.7,
+            "percent": "%70.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['userManager']"
+            ],
+            "warnings": [
+              "Sinif isimlendirme kurali ihlali (PascalCase olmali): ['userManager', 'userManager']",
+              "Izole sinif: hicbir iliskisi yok: ['userManager', 'userManager']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          },
+          "repair_actions": [
+            "no_supported_repair_action"
+          ],
+          "output_plantuml": "@startuml\nclass userManager {}\nclass userManager {}\n@enduml",
+          "compile_after": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.7,
+            "percent": "%70.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['userManager']"
+            ],
+            "warnings": [
+              "Sinif isimlendirme kurali ihlali (PascalCase olmali): ['userManager', 'userManager']",
+              "Izole sinif: hicbir iliskisi yok: ['userManager', 'userManager']"
+            ],
+            "class_count": 2,
+            "relationship_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "R20",
+      "category": "duplicate_with_relation",
+      "description": "Duplicate class with relation remains unsupported",
+      "expected_final_success": false,
+      "final_success": false,
+      "expectation_matched": true,
+      "iteration_count": 1,
+      "elapsed_seconds": 0.000394,
+      "initial_plantuml": "@startuml\nclass AuthService {}\nclass AuthService {}\nclass UserRepository {}\nAuthService --> UserRepository\n@enduml",
+      "final_plantuml": "@startuml\nclass AuthService {}\nclass AuthService {}\nclass UserRepository {}\nAuthService --> UserRepository\n@enduml",
+      "final_compile": {
+        "successful": false,
+        "syntax_valid": true,
+        "ocl_valid": false,
+        "score": 0.8,
+        "percent": "%80.0",
+        "errors": [
+          "Tekrar eden sinif ismi: ['AuthService']"
+        ],
+        "warnings": [],
+        "class_count": 3,
+        "relationship_count": 1
+      },
+      "iterations": [
+        {
+          "iteration_no": 1,
+          "input_plantuml": "@startuml\nclass AuthService {}\nclass AuthService {}\nclass UserRepository {}\nAuthService --> UserRepository\n@enduml",
+          "compile_before": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.8,
+            "percent": "%80.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['AuthService']"
+            ],
+            "warnings": [],
+            "class_count": 3,
+            "relationship_count": 1
+          },
+          "repair_actions": [
+            "no_supported_repair_action"
+          ],
+          "output_plantuml": "@startuml\nclass AuthService {}\nclass AuthService {}\nclass UserRepository {}\nAuthService --> UserRepository\n@enduml",
+          "compile_after": {
+            "successful": false,
+            "syntax_valid": true,
+            "ocl_valid": false,
+            "score": 0.8,
+            "percent": "%80.0",
+            "errors": [
+              "Tekrar eden sinif ismi: ['AuthService']"
+            ],
+            "warnings": [],
+            "class_count": 3,
+            "relationship_count": 1
+          }
+        }
+      ]
+    }
+  ]
+}

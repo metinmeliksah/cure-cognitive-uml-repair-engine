@@ -50,10 +50,10 @@ Vite, yalnızca `VITE_` ile başlayan değişkenleri istemci koduna aktarır. `f
 Örnek:
 
 ```env
-VITE_API_URL=http://localhost:8000/api
+VITE_API_URL=http://localhost:8000
 ```
 
-`VITE_API_URL` tanımlı değilse kod içi varsayılan: `http://localhost:8000/api` (`src/services/api.js`).
+`VITE_API_URL` tanımlı değilse kod içi varsayılan: `http://localhost:8000` (`src/services/api.js`).
 
 `.env` değişikliğinden sonra geliştirme sunucusunu yeniden başlatın.
 
@@ -82,7 +82,7 @@ Geliştirme adresi genelde **http://localhost:5173** (Vite varsayılanı). Port 
 
 ## API uçları (özet)
 
-İstek tabanı: `{VITE_API_URL}` (ör. `http://localhost:8000/api`).
+İstek tabanı: `{VITE_API_URL}` (ör. `http://localhost:8000`).
 
 | Yöntem | Yol | Kullanım |
 |--------|-----|----------|
