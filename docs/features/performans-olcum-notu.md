@@ -45,6 +45,51 @@ Bu dosyalarda `OpenAI`, `ChatOpenAI`, `langchain_openai` veya baska bir LLM
 istemcisi import edilmez. Dolayisiyla `/api/analyze` latency degeri regex,
 deterministik OCL kontrolu ve deterministik semantik skor hesaplamasini kapsar.
 
+## Yeniden uretilebilir deterministik latency olcumu
+
+Tablo IV kapsamindaki deterministik analiz yuku icin ayrica su betik
+eklenmistir:
+
+```text
+backend/evaluation/bugra_analyze_latency_experiment.py
+```
+
+Bu betik `/api/analyze` icindeki uc fonksiyonluk is yukunu 50 kez calistirir:
+
+```text
+srs_to_plantuml -> ocl_dogrula -> semantik_sadakat_skoru
+```
+
+Betik `ChatOpenAI`, `UMLGenerator` veya `UMLMultiAgentSystem` kullanmaz; bu
+nedenle LLM API anahtari gerektirmez. 2026-07-06 tarihinde calistirilan son
+kosum su dosyalari uretmistir:
+
+```text
+backend/evaluation/results/bugra_analyze_latency_experiment.csv
+backend/evaluation/results/bugra_analyze_latency_experiment.json
+backend/evaluation/results/bugra_analyze_latency_experiment.md
+```
+
+Son kosum ozeti:
+
+| Metrik | Deger |
+|---|---:|
+| Toplam istek | 50 |
+| Basarili istek | 50 |
+| Ortalama gecikme | 1.054 ms |
+| Minimum gecikme | 0.745 ms |
+| Maksimum gecikme | 6.796 ms |
+| P50 gecikme | 0.824 ms |
+| P95 gecikme | 1.629 ms |
+| P99 gecikme | 6.796 ms |
+| SLA uyum orani | %100.0 |
+| LLM cagrisi | 0 |
+
+Bu nedenle onceki 0.4 ms degeri LLM performansi olarak yorumlanmamalidir.
+Makale metninde daha guvenli yorum, deterministik `/api/analyze` hattinin
+yerel testte milisaniye mertebesinde calistigi; gercek LLM tabanli onarimin
+ise ayri olarak `/api/autonomous-repair` deneyleriyle raporlandigidir.
+
 ## Gercek LLM tabanli onarim nerede?
 
 Gercek LLM tabanli onarim `/api/autonomous-repair` endpoint'indedir.
