@@ -128,7 +128,7 @@ ai_core/src/ai/agent_workflow.py
 │   └── tests/
 │       ├── test_backend.py
 │       ├── test_full.py
-│       └── test_zeynep_checkpoint_api.py
+│       └── test_api_contracts.py
 ├── frontend/
 │   ├── package.json
 │   ├── vite.config.js
@@ -173,7 +173,7 @@ Backend ve AI modülleri ayrı `requirements.txt` dosyalarına sahiptir. Temel b
 ### Depoyu Klonlama
 
 ```bash
-git clone https://github.com/metinmeliksah/cure-cognitive-uml-repair-engine.git
+git clone <ANONYMIZED_REPOSITORY_URL>
 cd cure-cognitive-uml-repair-engine
 ```
 
@@ -316,7 +316,7 @@ Otonom onarım:
 ```bash
 curl -X POST http://localhost:8000/api/autonomous-repair \
   -H "Content-Type: application/json" \
-  -d "{\"plantuml_kodu\":\"class UserManager {}\",\"max_iterasyon\":3}"
+  -d "{\"plantuml_kodu\":\"class UserManager {}\",\"max_iterations\":3}"
 ```
 
 ## Frontend Kullanımı
@@ -355,7 +355,7 @@ Bu test paketi şunları kapsar:
 API kontrat testleri:
 
 ```bash
-python backend/tests/test_zeynep_checkpoint_api.py
+python backend/tests/test_api_contracts.py
 ```
 
 Bu dosya `fastapi` ortamda kurulu değilse kendini güvenli şekilde `SKIP` eder.
@@ -384,7 +384,7 @@ data_pipeline/datasets/pure_dataset.csv
 Otonom onarım deneylerini tekrar üretmek için:
 
 ```bash
-python experiments/run_autonomous_repair.py --max-iterasyon 3
+python experiments/run_autonomous_repair.py --max-iterations 3
 python ai_core/log_analiz.py results/autonomous_repair_results.json
 ```
 

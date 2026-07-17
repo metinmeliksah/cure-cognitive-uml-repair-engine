@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
-from src.api.endpoints import OtonomOnarimGirdisi, otonom_onarim  # noqa: E402
+from src.api.endpoints import AutonomousRepairRequest, autonomous_repair  # noqa: E402
 
 
 SCENARIOS = [
@@ -44,14 +44,14 @@ SCENARIOS = [
 ]
 
 
-def run(max_iterasyon: int) -> list[dict]:
+def run(max_iterations: int) -> list[dict]:
     rows = []
     for scenario in SCENARIOS:
-        response = otonom_onarim(
-            OtonomOnarimGirdisi(
+        response = autonomous_repair(
+            AutonomousRepairRequest(
                 plantuml_kodu=scenario["plantuml_kodu"],
                 srs_metni=scenario["srs_metni"],
-                max_iterasyon=max_iterasyon,
+                max_iterations=max_iterations,
             )
         )
         rows.append(
@@ -59,7 +59,7 @@ def run(max_iterasyon: int) -> list[dict]:
                 "scenario_id": scenario["id"],
                 "basarili": response["basarili"],
                 "sure_saniye": response["sure_saniye"],
-                "max_iterasyon": response["max_iterasyon"],
+                "max_iterations": response["max_iterations"],
                 "iteration_count": len(response["iterasyonlar"]),
                 "final_status": response["iterasyonlar"][-1]["status"],
                 "final_plantuml": response["final_plantuml"],
@@ -91,11 +91,11 @@ def write_outputs(rows: list[dict], output_dir: Path) -> tuple[Path, Path]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run CURE autonomous repair experiments.")
-    parser.add_argument("--max-iterasyon", type=int, default=3, choices=[1, 2, 3])
+    parser.add_argument("--max-iterations", type=int, default=3, choices=[1, 2, 3, 4, 5])
     parser.add_argument("--output-dir", default=str(ROOT / "results"))
     args = parser.parse_args()
 
-    rows = run(args.max_iterasyon)
+    rows = run(args.max_iterations)
     csv_path, json_path = write_outputs(rows, Path(args.output_dir))
     print(f"Wrote {csv_path}")
     print(f"Wrote {json_path}")

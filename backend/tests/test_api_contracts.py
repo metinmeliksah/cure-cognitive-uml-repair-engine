@@ -5,12 +5,12 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
     from src.api.endpoints import (
-        OtonomOnarimGirdisi,
+        AutonomousRepairRequest,
         PerformansOlcumGirdisi,
         SRSGirdisi,
         UMLDogrulamaGirdisi,
         generate_uml,
-        otonom_onarim,
+        autonomous_repair,
         performans_getir,
         performans_olcum_kaydet,
         plantuml_render_et,
@@ -48,7 +48,7 @@ def test_render_endpoint_contract():
 
 
 def test_autonomous_repair_final_flow():
-    response = otonom_onarim(OtonomOnarimGirdisi(plantuml_kodu="class UserManager {}"))
+    response = autonomous_repair(AutonomousRepairRequest(plantuml_kodu="class UserManager {}"))
     assert response["basarili"] is True
     assert response["final_plantuml"].startswith("@startuml")
     assert response["final_render"]["svg"]

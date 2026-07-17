@@ -73,7 +73,7 @@ def detect_cycle(siniflar: list, iliskiler: list) -> list:
     
     return donguler
 
-def ocl_dogrula(plantuml_kodu: str) -> dict:
+def validate_ocl(plantuml_kodu: str) -> dict:
     """
     PlantUML diyagramını OCL kurallarına göre kapsamlı doğrular.
     
@@ -212,7 +212,7 @@ if __name__ == "__main__":
     DiagramService --> ValidationEngine
     @enduml
     """
-    r = ocl_dogrula(test_uml)
+    r = validate_ocl(test_uml)
     print(f"Gecerli: {r['gecerli_mi']}")
     print(f"Skor: {r['yuzde']}")
     print(f"Hatalar: {r['hatalar']}")

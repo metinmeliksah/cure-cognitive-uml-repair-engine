@@ -2,7 +2,7 @@
 
 `UMLMultiAgentSystem` icindeki iterasyon limiti artik sabit `3` degeri yerine
 `max_iterations` parametresiyle belirlenir. Backend tarafinda
-`/api/autonomous-repair` endpoint'ine gelen `max_iterasyon` alani da bu
+`/api/autonomous-repair` endpoint'ine gelen `max_iterations` alani da bu
 parametreye aktarilir.
 
 ## Neden varsayilan limit 3?
@@ -21,5 +21,5 @@ Varsayilan deger olan `3`, uc pratik riski dengelemek icin korunmustur:
 
 Bu varsayim henuz deneysel olarak dogrulanmis bir duyarlilik analizi degildir.
 Limit `2`, `4` ve `5` icin gercek OpenAI API anahtariyla
-`backend/evaluation/bugra_iteration_sensitivity.py` calistirilip CSV sonucu
+`backend/evaluation/iteration_limit_sensitivity_experiment.py` calistirilip CSV sonucu
 uretilmeden "3 en iyi degerdir" seklinde kesin bir iddia kurulmamali.

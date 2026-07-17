@@ -3,7 +3,7 @@
     "scope": "backend/src/ocl_engine and backend/src/evaluators",
     "llm_calls": false,
     "autonomous_repair_reproduced": false,
-    "repair_experiment_log": "backend/evaluation/results/zeynep_repair_experiment_log.json",
+    "repair_experiment_log": "backend/evaluation/results/deterministic_repair_experiment.json",
     "repair_experiment_scope": "fresh deterministic backend repair run, not the original historical LLM-agent run"
   },
   "summary": {

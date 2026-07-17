@@ -22,7 +22,7 @@ pip install -r ai_core/requirements.txt
 Opsiyonel:
 
 ```bash
-python experiments/run_autonomous_repair.py --max-iterasyon 3 --output-dir results
+python experiments/run_autonomous_repair.py --max-iterations 3 --output-dir results
 ```
 
 ## Kullanim
@@ -54,7 +54,7 @@ Yok.
 ## Test
 
 ```bash
-python experiments/run_autonomous_repair.py --max-iterasyon 1
+python experiments/run_autonomous_repair.py --max-iterations 1
 python ai_core/log_analiz.py results/autonomous_repair_results.json
 ```
 

@@ -142,7 +142,7 @@ def hesapla_f1(tahmin: set, gercek: set) -> dict:
     }
 
 
-def semantik_sadakat_skoru(srs_metni: str, plantuml_kodu: str) -> dict:
+def calculate_semantic_fidelity(srs_metni: str, plantuml_kodu: str) -> dict:
     """
     IEEE/ISO 29148 standartlarına göre semantik sadakat değerlendirmesi.
 
@@ -203,7 +203,7 @@ if __name__ == "__main__":
     from srs_parser import srs_to_plantuml
     r = srs_to_plantuml(srs)
     print("Sınıflar:", r["bulunan_siniflar"])
-    ev = semantik_sadakat_skoru(srs, r["plantuml_kodu"])
+    ev = calculate_semantic_fidelity(srs, r["plantuml_kodu"])
     print("Skor:", ev["yuzde"])
     print("Halüsinasyonlar:", ev["halusinasyonlar"])
     print("Eksik:", ev["eksik_siniflar"])

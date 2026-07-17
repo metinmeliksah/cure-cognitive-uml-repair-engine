@@ -8,8 +8,8 @@ import sys, os, time
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'ai_core', 'src'))
 from parsers.srs_parser import srs_to_plantuml
-from evaluators.semantic_eval import semantik_sadakat_skoru
-from ocl_engine.ocl_validator import ocl_dogrula
+from evaluators.semantic_eval import calculate_semantic_fidelity
+from ocl_engine.ocl_validator import validate_ocl
 from ocl_engine.error_handler import hata_normalize_et, plantuml_syntax_kontrol, exception_logla
 from renderers.plantuml_renderer import render_plantuml
 from api.error_log_endpoint import router as error_log_router, hata_kaydet, HataLogGirdisi
@@ -63,11 +63,11 @@ class IterasyonGirdisi(BaseModel):
     srs_metni: Optional[str] = Field(None, description="Semantik degerlendirme icin SRS")
 
 
-class OtonomOnarimGirdisi(BaseModel):
+class AutonomousRepairRequest(BaseModel):
     # Max iterasyon 3 ile sinirli; bu sonsuz dongu riskini engeller.
     plantuml_kodu: str = Field(..., description="Onarilacak PlantUML kodu")
     srs_metni: Optional[str] = Field(None, description="Final semantik skor icin SRS metni")
-    max_iterasyon: int = Field(default=3, ge=1, le=5, description="Guvenli maksimum iterasyon")
+    max_iterations: int = Field(default=3, ge=1, le=5, description="Guvenli maksimum iterasyon")
 
 
 class PerformansOlcumGirdisi(BaseModel):
@@ -176,7 +176,7 @@ def _compile_test(plantuml_kodu: str) -> dict:
     Once PlantUML syntax kontrolu, sonra OCL kurallari calisir; hatalar tek formata cevrilir.
     """
     syntax = plantuml_syntax_kontrol(plantuml_kodu)
-    ocl = ocl_dogrula(plantuml_kodu)
+    ocl = validate_ocl(plantuml_kodu)
     hatalar = syntax["hatalar"] + ocl["hatalar"]
     return {
         "basarili": syntax["gecerli"] and ocl["gecerli_mi"],
@@ -208,7 +208,7 @@ def srs_parse_et(girdi: SRSGirdisi):
         render = render_plantuml(sonuc["plantuml_kodu"])
 
         # 3) UML, OCL kurallariyla dogrulanir ve ayni JSON cevabina eklenir.
-        ocl_sonuc = ocl_dogrula(sonuc["plantuml_kodu"])
+        ocl_sonuc = validate_ocl(sonuc["plantuml_kodu"])
         cevap = {
             "basarili": True,
             "plantuml_kodu": sonuc["plantuml_kodu"],
@@ -258,7 +258,7 @@ def plantuml_render_et(girdi: UMLDogrulamaGirdisi):
 def uml_dogrula(girdi: UMLDogrulamaGirdisi):
     """PlantUML kodunu OCL kurallarina gore dogrular."""
     try:
-        sonuc = ocl_dogrula(girdi.plantuml_kodu)
+        sonuc = validate_ocl(girdi.plantuml_kodu)
         return {
             "basarili": True,
             "gecerli_mi": sonuc["gecerli_mi"],
@@ -279,7 +279,7 @@ def semantik_degerlendir(girdi: TamAnalizGirdisi):
     if not girdi.plantuml_kodu:
         raise HTTPException(status_code=400, detail="Degerlendirme icin plantuml_kodu gerekli")
     try:
-        sonuc = semantik_sadakat_skoru(girdi.srs_metni, girdi.plantuml_kodu)
+        sonuc = calculate_semantic_fidelity(girdi.srs_metni, girdi.plantuml_kodu)
         return {
             "basarili": True,
             "genel_skor": sonuc["genel_skor"],
@@ -297,11 +297,11 @@ def semantik_degerlendir(girdi: TamAnalizGirdisi):
 @app.post("/api/iterate")
 def iterasyon_testi(girdi: IterasyonGirdisi):
     """Her onarim iterasyonunda compile + opsiyonel semantik test calistirir."""
-    MAX_ITERASYON = 3
-    if girdi.iterasyon_no > MAX_ITERASYON:
+    MAX_ITERATIONS = 3
+    if girdi.iterasyon_no > MAX_ITERATIONS:
         raise HTTPException(
             status_code=400,
-            detail=f"Maksimum iterasyon sayisi aşıldı: {MAX_ITERASYON}"
+            detail=f"Maksimum iterasyon sayisi aşıldı: {MAX_ITERATIONS}"
         )
 
     baslangic = time.time()
@@ -313,7 +313,7 @@ def iterasyon_testi(girdi: IterasyonGirdisi):
 
         semantik_sonuc = None
         if girdi.srs_metni:
-            semantik_sonuc = semantik_sadakat_skoru(girdi.srs_metni, girdi.plantuml_kodu)
+            semantik_sonuc = calculate_semantic_fidelity(girdi.srs_metni, girdi.plantuml_kodu)
 
         gecen_sure = round(time.time() - baslangic, 3)
 
@@ -327,8 +327,8 @@ def iterasyon_testi(girdi: IterasyonGirdisi):
         return {
             "basarili": True,
             "iterasyon_no": girdi.iterasyon_no,
-            "max_iterasyon": MAX_ITERASYON,
-            "son_iterasyon_mu": girdi.iterasyon_no >= MAX_ITERASYON,
+            "max_iterations": MAX_ITERATIONS,
+            "son_iterasyon_mu": girdi.iterasyon_no >= MAX_ITERATIONS,
             "durum": durum,
             "compile": {
                 "basarili": compile_basarili,
@@ -355,7 +355,7 @@ def iterasyon_testi(girdi: IterasyonGirdisi):
 
 
 @app.post("/api/autonomous-repair")
-def otonom_onarim(girdi: OtonomOnarimGirdisi):
+def autonomous_repair(girdi: AutonomousRepairRequest):
     """
     Gerçek AI (Healer/Critic) ajanını kullanan otonom onarım akışı.
     """
@@ -380,7 +380,7 @@ def otonom_onarim(girdi: OtonomOnarimGirdisi):
     if not compile_sonuc["basarili"]:
         try:
             # Multi-Agent sistemi başlatılıyor
-            agent = UMLMultiAgentSystem(max_iterations=girdi.max_iterasyon)
+            agent = UMLMultiAgentSystem(max_iterations=girdi.max_iterations)
             
             # Eğer SRS metni boş gelirse varsayılan bir prompt veriyoruz
             srs_metni = girdi.srs_metni if girdi.srs_metni else "Verilen UML kodunu OCL ve sözdizimi kurallarına uygun şekilde onar."
@@ -416,7 +416,7 @@ def otonom_onarim(girdi: OtonomOnarimGirdisi):
 
     # Final Değerlendirmeleri
     final_compile = _compile_test(aktif_kod)
-    semantik = semantik_sadakat_skoru(girdi.srs_metni, aktif_kod) if girdi.srs_metni else None
+    semantik = calculate_semantic_fidelity(girdi.srs_metni, aktif_kod) if girdi.srs_metni else None
     sure = round(time.time() - baslangic, 3)
     basarili = final_compile["basarili"]
     olcum_kaydet("/api/autonomous-repair", sure, basarili)
@@ -425,7 +425,7 @@ def otonom_onarim(girdi: OtonomOnarimGirdisi):
         "basarili": basarili,
         "sure_saniye": sure,
         "sla_gecti_mi": sure < 15,
-        "max_iterasyon": girdi.max_iterasyon,
+        "max_iterations": girdi.max_iterations,
         "agent_iteration_count": agent_iteration_count,
         "agent_is_valid": agent_is_valid,
         "agent_llm_call_count": agent_llm_call_count,
@@ -447,8 +447,8 @@ def tam_analiz_yap(girdi: SRSGirdisi):
             raise HTTPException(status_code=400, detail=parse_sonuc["hata"])
 
         uml = parse_sonuc["plantuml_kodu"]
-        ocl_sonuc = ocl_dogrula(uml)
-        eval_sonuc = semantik_sadakat_skoru(girdi.metin, uml)
+        ocl_sonuc = validate_ocl(uml)
+        eval_sonuc = calculate_semantic_fidelity(girdi.metin, uml)
 
         gecen_sure = round(time.time() - baslangic, 3)
         olcum_kaydet("/api/analyze", gecen_sure, True)

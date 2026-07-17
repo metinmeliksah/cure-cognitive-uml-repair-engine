@@ -27,7 +27,7 @@
 
 ------------------------------------------------------------------------
 
-# Metin Melikşah Dermencioğlu
+# Contributor A
 
 ## Sorumluluk: Scrum Master + Frontend olarak otonom onarım sürecinin UI takibini ve sprint koordinasyonunu yürütmek
 
@@ -45,7 +45,7 @@
 
 ------------------------------------------------------------------------
 
-# Buğrahan Gökkaya
+# Contributor B
 
 ## Sorumluluk: Yapay Zeka + NLP olarak Critic-Healer otonom döngüsünü ve iterasyon limitini kodlamak
 
@@ -63,7 +63,7 @@
 
 ------------------------------------------------------------------------
 
-# Zeynep Karataş
+# Contributor C
 
 ## Sorumluluk: Backend + Test olarak anlık compile testlerini ve final diyagram teslim akışını tamamlamak
 
@@ -81,7 +81,7 @@
 
 ------------------------------------------------------------------------
 
-# Aydın Doğan
+# Contributor D
 
 ## Sorumluluk: Veri Uzmanı + Database olarak iterasyon log analytics verisini kalıcı hale getirmek
 

@@ -12,14 +12,14 @@ import sys
 import time
 from pathlib import Path
 
-from bugra_experiment_cases import INVALID_PLANTUML_CASES
+from autonomous_repair_cases import INVALID_PLANTUML_CASES
 
 
 ROOT = Path(__file__).resolve().parents[2]
 BACKEND = ROOT / "backend"
 AI_CORE = ROOT / "ai_core" / "src"
 RESULTS = BACKEND / "evaluation" / "results"
-OUTPUT_CSV = RESULTS / "bugra_latency_experiment.csv"
+OUTPUT_CSV = RESULTS / "autonomous_repair_latency_experiment.csv"
 
 
 def configure_paths() -> None:
@@ -48,18 +48,18 @@ def main() -> int:
         return 2
 
     configure_paths()
-    from src.api.endpoints import OtonomOnarimGirdisi, otonom_onarim
+    from src.api.endpoints import AutonomousRepairRequest, autonomous_repair
 
     RESULTS.mkdir(parents=True, exist_ok=True)
     rows = []
     started = time.time()
 
     for case in INVALID_PLANTUML_CASES:
-        response = otonom_onarim(
-            OtonomOnarimGirdisi(
+        response = autonomous_repair(
+            AutonomousRepairRequest(
                 plantuml_kodu=case["plantuml_kodu"],
                 srs_metni=case["srs_metni"],
-                max_iterasyon=3,
+                max_iterations=3,
             )
         )
         rows.append(

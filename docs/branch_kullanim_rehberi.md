@@ -26,10 +26,10 @@ main
 **Geliştirici branchleri:**
 
 ```
-metinmeliksah
-zeynepkaratas
-bugrahangokkaya
-aydindogan
+contributor-a
+contributor-c
+contributor-b
+contributor-d
 ```
 
 Her geliştirici **sadece kendi branch'inde** geliştirme yapar.
@@ -72,7 +72,7 @@ git checkout feature-<isim>
 Örnek:
 
 ```bash
-git checkout feature-zeynep
+git checkout feature-contributor-c
 ```
 
 ---
@@ -146,9 +146,9 @@ isimsoyisim
 
 ## 🧪 Örnek Senaryo
 
-Zeynep yeni bir özellik geliştirdi:
+Bir katkıcı yeni bir özellik geliştirdi:
 
-1. `zeynepkaratas` branch'inde çalıştı
+1. `contributor-c` branch'inde çalıştı
 2. Commit attı
 3. Push etti
 4. PR açtı
@@ -162,4 +162,3 @@ Zeynep yeni bir özellik geliştirdi:
 ## Versiyon
 
 **v1.0 — Branch Kullanım ve PR Süreci Rehberi**
-

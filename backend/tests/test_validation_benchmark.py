@@ -7,14 +7,14 @@ REPO_ROOT = os.path.dirname(BACKEND_ROOT)
 sys.path.insert(0, BACKEND_ROOT)
 sys.path.insert(0, REPO_ROOT)
 
-from backend.evaluation.zeynep_validation_benchmark import (
+from backend.evaluation.validation_benchmark import (
     OCL_CASES,
     SEMANTIC_CASES,
     run_ocl_cases,
     run_semantic_cases,
     wilson_interval,
 )
-from backend.evaluation.zeynep_repair_experiment_log import build_report
+from backend.evaluation.deterministic_repair_experiment import build_report
 
 
 def test_ocl_validation_sample_matches_expected_flags():

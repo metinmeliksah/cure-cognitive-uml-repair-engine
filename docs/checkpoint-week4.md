@@ -27,7 +27,7 @@
 
 ------------------------------------------------------------------------
 
-# Metin Melikşah Dermencioğlu
+# Contributor A
 
 ## Sorumluluk: Scrum Master + Frontend olarak son kullanıcı testlerini yönetmek ve IEEE makale teslimini tamamlamak
 
@@ -45,7 +45,7 @@
 
 ------------------------------------------------------------------------
 
-# Buğrahan Gökkaya
+# Contributor B
 
 ## Sorumluluk: Yapay Zeka + NLP olarak Semantic Fidelity skorlama mekanizmasını geliştirmek
 
@@ -63,7 +63,7 @@
 
 ------------------------------------------------------------------------
 
-# Zeynep Karataş
+# Contributor C
 
 ## Sorumluluk: Backend + Test olarak E2E performans testlerini yürütmek ve latency optimizasyonunu tamamlamak
 
@@ -81,7 +81,7 @@
 
 ------------------------------------------------------------------------
 
-# Aydın Doğan
+# Contributor D
 
 ## Sorumluluk: Veri Uzmanı + Database olarak onarım loglarını analiz edip akademik bulgulara dönüştürmek
 
