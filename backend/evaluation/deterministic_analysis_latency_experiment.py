@@ -3,11 +3,11 @@
 This script intentionally measures the same local function chain used by
 `backend/src/api/endpoints.py::tam_analiz_yap`:
 
-    srs_to_plantuml -> ocl_dogrula -> semantik_sadakat_skoru
+    srs_to_plantuml -> validate_ocl -> calculate_semantic_fidelity
 
 It does not call OpenAI, ChatOpenAI, UMLGenerator, or UMLMultiAgentSystem.
 The purpose is to document the latency scope of Table IV separately from the
-real LLM repair latency measured by `bugra_latency_experiment.py`.
+real LLM repair latency measured by `autonomous_repair_latency_experiment.py`.
 """
 
 from __future__ import annotations
@@ -28,8 +28,8 @@ RESULTS = ROOT / "backend" / "evaluation" / "results"
 
 sys.path.insert(0, str(BACKEND_SRC))
 
-from evaluators.semantic_eval import semantik_sadakat_skoru  # noqa: E402
-from ocl_engine.ocl_validator import ocl_dogrula  # noqa: E402
+from evaluators.semantic_eval import calculate_semantic_fidelity  # noqa: E402
+from ocl_engine.ocl_validator import validate_ocl  # noqa: E402
 from parsers.srs_parser import srs_to_plantuml  # noqa: E402
 
 
@@ -55,8 +55,8 @@ def run_once() -> dict:
     start = time.perf_counter()
     parse_result = srs_to_plantuml(SRS_TEXT)
     uml = parse_result["plantuml_kodu"]
-    ocl_result = ocl_dogrula(uml)
-    semantic_result = semantik_sadakat_skoru(SRS_TEXT, uml)
+    ocl_result = validate_ocl(uml)
+    semantic_result = calculate_semantic_fidelity(SRS_TEXT, uml)
     elapsed_seconds = time.perf_counter() - start
 
     return {
@@ -138,9 +138,9 @@ def main() -> None:
         ],
     }
 
-    csv_path = RESULTS / "bugra_analyze_latency_experiment.csv"
-    json_path = RESULTS / "bugra_analyze_latency_experiment.json"
-    md_path = RESULTS / "bugra_analyze_latency_experiment.md"
+    csv_path = RESULTS / "deterministic_analysis_latency_experiment.csv"
+    json_path = RESULTS / "deterministic_analysis_latency_experiment.json"
+    md_path = RESULTS / "deterministic_analysis_latency_experiment.md"
 
     with csv_path.open("w", newline="", encoding="utf-8") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=list(rows[0].keys()))
@@ -177,11 +177,11 @@ def main() -> None:
         "The measured chain is:",
         "",
         "```text",
-        "srs_to_plantuml -> ocl_dogrula -> semantik_sadakat_skoru",
+        "srs_to_plantuml -> validate_ocl -> calculate_semantic_fidelity",
         "```",
         "",
         "Real LLM repair latency is measured separately by",
-        "`backend/evaluation/bugra_latency_experiment.py`.",
+        "`backend/evaluation/autonomous_repair_latency_experiment.py`.",
     ]
     md_path.write_text("\n".join(md_lines) + "\n", encoding="utf-8")
 

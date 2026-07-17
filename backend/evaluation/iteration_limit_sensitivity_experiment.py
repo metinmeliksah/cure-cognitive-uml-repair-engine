@@ -12,14 +12,14 @@ import sys
 import time
 from pathlib import Path
 
-from bugra_experiment_cases import INVALID_PLANTUML_CASES
+from autonomous_repair_cases import INVALID_PLANTUML_CASES
 
 
 ROOT = Path(__file__).resolve().parents[2]
 BACKEND = ROOT / "backend"
 AI_CORE = ROOT / "ai_core" / "src"
 RESULTS = BACKEND / "evaluation" / "results"
-OUTPUT_CSV = RESULTS / "bugra_iteration_sensitivity.csv"
+OUTPUT_CSV = RESULTS / "iteration_limit_sensitivity_experiment.csv"
 LIMITS = [2, 4, 5]
 
 

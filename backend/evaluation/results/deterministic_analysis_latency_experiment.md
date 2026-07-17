@@ -24,8 +24,8 @@ It should not be interpreted as LLM repair latency.
 The measured chain is:
 
 ```text
-srs_to_plantuml -> ocl_dogrula -> semantik_sadakat_skoru
+srs_to_plantuml -> validate_ocl -> calculate_semantic_fidelity
 ```
 
 Real LLM repair latency is measured separately by
-`backend/evaluation/bugra_latency_experiment.py`.
+`backend/evaluation/autonomous_repair_latency_experiment.py`.

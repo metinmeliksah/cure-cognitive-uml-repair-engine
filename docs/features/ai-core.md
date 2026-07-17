@@ -60,7 +60,7 @@ Yok. RAG kurallari su an bellek icinde tutulur; kalici indeks icin
 ## Test
 
 ```bash
-python backend/tests/test_zeynep_checkpoint_api.py
+python backend/tests/test_api_contracts.py
 ```
 
 ## Hata Senaryolari

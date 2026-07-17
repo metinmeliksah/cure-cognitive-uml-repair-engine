@@ -1,5 +1,5 @@
 """
-Reproducible backend repair experiment log for Zeynep Karatas' CURE scope.
+Reproducible backend repair experiment log for the deterministic CURE repair scope.
 
 This script creates a dated raw experiment log for the backend-owned structural
 repair path. It does not use the LLM/LangGraph agent and does not claim to
@@ -29,7 +29,7 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from ocl_engine.error_handler import plantuml_syntax_kontrol  # noqa: E402
-from ocl_engine.ocl_validator import ocl_dogrula  # noqa: E402
+from ocl_engine.ocl_validator import validate_ocl  # noqa: E402
 
 
 MAX_ITERATIONS = 3
@@ -46,7 +46,7 @@ class RepairCase:
 
 def compile_check(plantuml_code: str) -> dict:
     syntax = plantuml_syntax_kontrol(plantuml_code)
-    ocl = ocl_dogrula(plantuml_code)
+    ocl = validate_ocl(plantuml_code)
     errors = syntax["hatalar"] + ocl["hatalar"]
     warnings = ocl["uyarilar"]
     return {
@@ -235,7 +235,7 @@ def write_csv(path: Path, cases: list[dict]) -> None:
 def write_markdown(path: Path, report: dict) -> None:
     interval = report["wilson_95_ci"]
     lines = [
-        "# Zeynep Backend Repair Experiment Log",
+        "# Deterministic Backend Repair Experiment Log",
         "",
         "This is a fresh reproducible experiment log generated from the current repository state.",
         "It should not be described as an original historical run.",
@@ -322,9 +322,9 @@ def main() -> None:
     output_dir = BACKEND_ROOT / "evaluation" / "results"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    json_path = output_dir / "zeynep_repair_experiment_log.json"
-    csv_path = output_dir / "zeynep_repair_experiment_log.csv"
-    md_path = output_dir / "zeynep_repair_experiment_log.md"
+    json_path = output_dir / "deterministic_repair_experiment.json"
+    csv_path = output_dir / "deterministic_repair_experiment.csv"
+    md_path = output_dir / "deterministic_repair_experiment.md"
 
     json_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     write_csv(csv_path, report["cases"])

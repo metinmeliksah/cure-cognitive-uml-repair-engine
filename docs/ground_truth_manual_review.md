@@ -1,6 +1,6 @@
 # CURE Backend Manual Review Sample
 
-Bu iç doküman, Zeynep Karataş'ın sorumluluk alanındaki `backend/src/ocl_engine/`
+Bu iç doküman, Backend doğrulama kapsamındaki `backend/src/ocl_engine/`
 ve `backend/src/evaluators/` çıktılarının küçük bir elle doğrulama örneklemiyle
 gözden geçirilmesi için hazırlanmıştır. Makale metnine eklenmemelidir; yalnızca
 proje içi kontrol ve danışmanla paylaşılabilecek destek materyali olarak
@@ -17,7 +17,7 @@ kullanılmalıdır.
 
 ## İnceleme Şablonu
 
-| No | PlantUML girdisi / senaryo | Beklenen ihlal türü | Sistem çıktısı | Skor | Zeynep onayı | Not |
+| No | PlantUML girdisi / senaryo | Beklenen ihlal türü | Sistem çıktısı | Skor | Yazar içi onay | Not |
 |---:|---|---|---|---:|---|---|
 | 1 | `class UserManager {}\n@enduml` | Eksik başlangıç etiketi | Hata: `@startuml etiketi eksik` | %80.0 | Onaylandı | Beklenen hata doğru yakalanmış. Skorun %80 kalması makul; tek yapısal eksik var. |
 | 2 | `@startuml\nclass UserManager {}` | Eksik bitiş etiketi | Hata: `@enduml etiketi eksik` | %80.0 | Onaylandı | Kapanış etiketi eksikliği açık ve sistem çıktısı beklenenle uyumlu. |

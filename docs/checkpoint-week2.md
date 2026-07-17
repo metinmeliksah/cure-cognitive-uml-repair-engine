@@ -28,7 +28,7 @@
 
 ------------------------------------------------------------------------
 
-# Metin Melikşah Dermencioğlu
+# Contributor A
 
 ## Sorumluluk: Hata uyarıları ve görsel geri bildirim sistemi oluşturmak
 
@@ -46,7 +46,7 @@
 
 ------------------------------------------------------------------------
 
-# Buğrahan Gökkaya
+# Contributor B
 
 ## Sorumluluk: Multi-agent sistemi geliştirmek
 
@@ -64,7 +64,7 @@
 
 ------------------------------------------------------------------------
 
-# Zeynep Karataş
+# Contributor C
 
 ## Sorumluluk: Hata işleme ve doğrulama mekanizmaları
 
@@ -82,7 +82,7 @@
 
 ------------------------------------------------------------------------
 
-# Aydın Doğan
+# Contributor D
 
 ## Sorumluluk: Vektör veritabanı ve RAG altyapısı
 

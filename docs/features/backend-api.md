@@ -64,7 +64,7 @@ Yok. Hata loglari ve performans olcumleri prototipte bellek icinde tutulur.
 
 ```bash
 python backend/tests/test_full.py
-python backend/tests/test_zeynep_checkpoint_api.py
+python backend/tests/test_api_contracts.py
 ```
 
 ## Hata Senaryolari

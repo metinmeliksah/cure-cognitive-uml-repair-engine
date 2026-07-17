@@ -105,14 +105,14 @@ export const evaluateUML = async (srs_metni, plantuml_kodu) => {
 
 /**
  * Gerçek AI ajanıyla otonom UML onarımı.
- * max_iterasyon: 1-3 arası (backend limiti).
+ * max_iterations: 1-5 arası (backend limiti).
  */
-export const autonomousRepair = async (plantuml_kodu, srs_metni = null, max_iterasyon = 3) => {
+export const autonomousRepair = async (plantuml_kodu, srs_metni = null, max_iterations = 3) => {
   try {
     const response = await api.post('/api/autonomous-repair', {
       plantuml_kodu,
       srs_metni,
-      max_iterasyon,
+      max_iterations,
     });
     return response.data;
   } catch (error) {

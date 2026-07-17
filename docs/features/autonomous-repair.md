@@ -20,14 +20,14 @@ pip install -r ai_core/requirements.txt
 
 ## Konfigurasyon
 
-`max_iterasyon` request govdesinden gelir ve 1-3 arasinda sinirlanir.
+`max_iterations` request govdesinden gelir ve 1-5 arasinda sinirlanir.
 
 ## Kullanim
 
 ```bash
 curl -X POST http://localhost:8000/api/autonomous-repair \
   -H "Content-Type: application/json" \
-  -d "{\"plantuml_kodu\":\"class UserManager {}\",\"max_iterasyon\":1}"
+  -d "{\"plantuml_kodu\":\"class UserManager {}\",\"max_iterations\":1}"
 ```
 
 ## Bagimliliklar
@@ -52,7 +52,7 @@ Request:
 {
   "plantuml_kodu": "class UserManager {}",
   "srs_metni": "The UserManager handles authentication.",
-  "max_iterasyon": 1
+  "max_iterations": 1
 }
 ```
 
@@ -61,7 +61,7 @@ Response ana alanlari:
 ```json
 {
   "basarili": true,
-  "max_iterasyon": 1,
+  "max_iterations": 1,
   "iterasyonlar": [],
   "final_plantuml": "@startuml...",
   "final_compile": {}
@@ -75,8 +75,8 @@ Yok.
 ## Test
 
 ```bash
-python backend/tests/test_zeynep_checkpoint_api.py
-python experiments/run_autonomous_repair.py --max-iterasyon 1
+python backend/tests/test_api_contracts.py
+python experiments/run_autonomous_repair.py --max-iterations 1
 ```
 
 ## Hata Senaryolari

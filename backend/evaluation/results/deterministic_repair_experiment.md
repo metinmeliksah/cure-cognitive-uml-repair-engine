@@ -1,4 +1,4 @@
-# Zeynep Backend Repair Experiment Log
+# Deterministic Backend Repair Experiment Log
 
 This is a fresh reproducible experiment log generated from the current repository state.
 It should not be described as an original historical run.

@@ -6,8 +6,8 @@ import sys, os, time
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.parsers.srs_parser import srs_to_plantuml
-from src.evaluators.semantic_eval import semantik_sadakat_skoru
-from src.ocl_engine.ocl_validator import ocl_dogrula
+from src.evaluators.semantic_eval import calculate_semantic_fidelity
+from src.ocl_engine.ocl_validator import validate_ocl
 from src.ocl_engine.error_handler import (
     json_hata_parse_et, hata_normalize_et,
     exception_logla, plantuml_syntax_kontrol
@@ -120,7 +120,7 @@ def test_exception_loglama():
 
 def test_iterasyon_1_basarili():
     """1. iterasyonda geçerli UML başarılı dönmeli."""
-    ocl = ocl_dogrula(GECERLI_UML)
+    ocl = validate_ocl(GECERLI_UML)
     assert ocl["gecerli_mi"] == True
     assert ocl["skor"] >= 0.8
     print(f"  PASS: İterasyon 1 - compile başarılı (skor={ocl['yuzde']})")
@@ -128,7 +128,7 @@ def test_iterasyon_1_basarili():
 def test_iterasyon_compile_hata_yakalama():
     """Hatalı UML compile hatası vermeli ve yakalanmalı."""
     try:
-        ocl = ocl_dogrula(HATALI_UML_SYNTAX)
+        ocl = validate_ocl(HATALI_UML_SYNTAX)
         assert ocl["gecerli_mi"] == False
         assert len(ocl["hatalar"]) > 0
         print(f"  PASS: İterasyon compile hata yakalama ({ocl['hatalar']})")
@@ -138,15 +138,15 @@ def test_iterasyon_compile_hata_yakalama():
 
 def test_iterasyon_ocl_uyari_tespiti():
     """OCL uyarıları (tekrarlı sınıf, izole sınıf) tespit edilmeli."""
-    ocl = ocl_dogrula(HATALI_UML_OCL)
+    ocl = validate_ocl(HATALI_UML_OCL)
     assert len(ocl["hatalar"]) > 0 or len(ocl["uyarilar"]) > 0
     print(f"  PASS: OCL uyarı tespiti - hatalar={ocl['hatalar']}, uyarılar={ocl['uyarilar']}")
 
-def test_max_iterasyon_limiti():
+def test_max_iterations_limiti():
     """3 iterasyon simülasyonu - son iterasyonda durmalı."""
     MAX = 3
     for i in range(1, MAX + 1):
-        ocl = ocl_dogrula(GECERLI_UML)
+        ocl = validate_ocl(GECERLI_UML)
         son_mu = (i >= MAX)
         if i == MAX:
             assert son_mu == True
@@ -162,7 +162,7 @@ def test_hatali_uml_onarim_akisi():
     assert syntax["gecerli"] == False
 
     # 2. OCL doğrula
-    ocl = ocl_dogrula(HATALI_UML_SYNTAX)
+    ocl = validate_ocl(HATALI_UML_SYNTAX)
     assert ocl["gecerli_mi"] == False
 
     # 3. Hataları normalize et
@@ -174,7 +174,7 @@ def test_hatali_uml_onarim_akisi():
 
 def test_basarili_onarim_final_cikti():
     """Başarılı compile sonrası final UML hazır olmalı."""
-    ocl = ocl_dogrula(GECERLI_UML)
+    ocl = validate_ocl(GECERLI_UML)
     assert ocl["gecerli_mi"] == True
     # Final diyagram olarak GECERLI_UML kullanılabilir
     final_uml = GECERLI_UML
@@ -189,10 +189,10 @@ def test_e2e_basit_srs():
     parse = srs_to_plantuml(SRS_BASIT)
     assert parse["sinif_sayisi"] > 0
 
-    ocl = ocl_dogrula(parse["plantuml_kodu"])
+    ocl = validate_ocl(parse["plantuml_kodu"])
     assert "gecerli_mi" in ocl
 
-    semantik = semantik_sadakat_skoru(SRS_BASIT, parse["plantuml_kodu"])
+    semantik = calculate_semantic_fidelity(SRS_BASIT, parse["plantuml_kodu"])
     assert semantik["genel_skor"] >= 0.0
 
     print(f"  PASS: E2E basit SRS - {parse['sinif_sayisi']} sınıf, OCL={ocl['yuzde']}, Semantik={semantik['yuzde']}")
@@ -202,8 +202,8 @@ def test_e2e_karmasik_srs():
     parse = srs_to_plantuml(SRS_KARMASIK)
     assert parse["sinif_sayisi"] >= 3
 
-    ocl = ocl_dogrula(parse["plantuml_kodu"])
-    semantik = semantik_sadakat_skoru(SRS_KARMASIK, parse["plantuml_kodu"])
+    ocl = validate_ocl(parse["plantuml_kodu"])
+    semantik = calculate_semantic_fidelity(SRS_KARMASIK, parse["plantuml_kodu"])
 
     print(f"  PASS: E2E karmaşık SRS - {parse['sinif_sayisi']} sınıf, OCL={ocl['yuzde']}, Semantik={semantik['yuzde']}")
 
@@ -220,8 +220,8 @@ def test_performans_tek_istek_sla():
     """Tek /analyze isteği 15 saniyenin altında olmalı."""
     baslangic = time.time()
     parse = srs_to_plantuml(SRS_BASIT)
-    ocl_dogrula(parse["plantuml_kodu"])
-    semantik_sadakat_skoru(SRS_BASIT, parse["plantuml_kodu"])
+    validate_ocl(parse["plantuml_kodu"])
+    calculate_semantic_fidelity(SRS_BASIT, parse["plantuml_kodu"])
     sure = time.time() - baslangic
 
     olcum_kaydet("/api/analyze", sure, True)
@@ -234,7 +234,7 @@ def test_performans_coklu_istek():
     for i in range(10):
         baslangic = time.time()
         parse = srs_to_plantuml(SRS_BASIT)
-        ocl_dogrula(parse["plantuml_kodu"])
+        validate_ocl(parse["plantuml_kodu"])
         sure = time.time() - baslangic
         olcum_kaydet("/api/analyze", sure, True)
 
@@ -256,8 +256,8 @@ def test_performans_percentile_hesaplama():
 
 def test_regresyon_ocl_hep_ayni_sonucu():
     """Aynı UML girişi her seferinde aynı OCL sonucunu vermeli."""
-    sonuc1 = ocl_dogrula(GECERLI_UML)
-    sonuc2 = ocl_dogrula(GECERLI_UML)
+    sonuc1 = validate_ocl(GECERLI_UML)
+    sonuc2 = validate_ocl(GECERLI_UML)
     assert sonuc1["skor"] == sonuc2["skor"]
     assert sonuc1["gecerli_mi"] == sonuc2["gecerli_mi"]
     print("  PASS: Regresyon - OCL deterministic çalışıyor")
@@ -285,7 +285,7 @@ if __name__ == "__main__":
         ("CP3 | Integration | İterasyon 1 başarılı", test_iterasyon_1_basarili),
         ("CP3 | Integration | Compile hata yakalama", test_iterasyon_compile_hata_yakalama),
         ("CP3 | Integration | OCL uyarı tespiti", test_iterasyon_ocl_uyari_tespiti),
-        ("CP3 | Integration | Max iterasyon limiti", test_max_iterasyon_limiti),
+        ("CP3 | Integration | Max iterasyon limiti", test_max_iterations_limiti),
         ("CP3 | Integration | Hatalı UML onarım akışı", test_hatali_uml_onarim_akisi),
         ("CP3 | Integration | Final UML çıktısı", test_basarili_onarim_final_cikti),
         # CP4: E2E

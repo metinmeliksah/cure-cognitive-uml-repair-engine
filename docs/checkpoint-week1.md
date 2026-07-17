@@ -27,7 +27,7 @@
 
 ---
 
-#  Metin Melikşah Dermencioğlu
+#  Contributor A
 
 ## Sorumluluk: Web arayüzü altyapısını kurmak ve kullanıcı giriş ekranını oluşturmak
 
@@ -45,7 +45,7 @@
 
 ---
 
-# Buğrahan Gökkaya
+# Contributor B
 
 ## Sorumluluk: LLM entegrasyonu ve ilk UML üretimi
 
@@ -63,7 +63,7 @@
 
 ---
 
-# Zeynep Karataş
+# Contributor C
 
 ## Sorumluluk: API geliştirme ve UML render sistemi
 
@@ -81,7 +81,7 @@
 
 ---
 
-# Aydın Doğan
+# Contributor D
 
 ## Sorumluluk: Test veri seti hazırlama ve UML/OCL standartlarını toplama
 

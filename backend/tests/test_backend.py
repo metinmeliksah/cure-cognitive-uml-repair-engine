@@ -2,8 +2,8 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.parsers.srs_parser import srs_to_plantuml
-from src.evaluators.semantic_eval import semantik_sadakat_skoru
-from src.ocl_engine.ocl_validator import ocl_dogrula
+from src.evaluators.semantic_eval import calculate_semantic_fidelity
+from src.ocl_engine.ocl_validator import validate_ocl
 
 # ── Test yardımcıları ──────────────────────────
 
@@ -65,21 +65,21 @@ def test_parser_kisa_metin():
 
 def test_ocl_gecerli_diyagram():
     """Geçerli UML kodu OCL testini geçmeli."""
-    r = ocl_dogrula(GECERLI_UML)
+    r = validate_ocl(GECERLI_UML)
     assert r["gecerli_mi"] == True, f"Hatalar: {r['hatalar']}"
     assert r["skor"] > 0.8, f"Skor cok dusuk: {r['skor']}"
     print(f"  PASS: Gecerli diyagram skor={r['yuzde']}")
 
 def test_ocl_eksik_etiket():
     """@startuml eksikse hata vermeli."""
-    r = ocl_dogrula(GECERSIZ_UML)
+    r = validate_ocl(GECERSIZ_UML)
     assert r["gecerli_mi"] == False, "Eksik etiket tespit edilmedi"
     assert len(r["hatalar"]) > 0
     print(f"  PASS: Eksik etiket tespit edildi: {r['hatalar']}")
 
 def test_ocl_bos_diyagram():
     """Boş diyagram hata vermeli."""
-    r = ocl_dogrula("@startuml\n@enduml")
+    r = validate_ocl("@startuml\n@enduml")
     assert r["sinif_sayisi"] == 0
     print(f"  PASS: Bos diyagram islendi, sinif_sayisi={r['sinif_sayisi']}")
 
@@ -89,7 +89,7 @@ def test_semantik_yuksek_skor():
     """SRS ile eşleşen UML yüksek skor almalı."""
     srs = "UserManager handles authentication. DiagramService generates diagrams."
     uml = "@startuml\nclass UserManager {}\nclass DiagramService {}\nUserManager --> DiagramService\n@enduml"
-    r = semantik_sadakat_skoru(srs, uml)
+    r = calculate_semantic_fidelity(srs, uml)
     assert r["genel_skor"] > 0.5, f"Skor beklenenden dusuk: {r['genel_skor']}"
     print(f"  PASS: Yuksek eslesme skoru={r['yuzde']}")
 
@@ -97,13 +97,13 @@ def test_semantik_halusinasyon():
     """UML'deki uydurma sınıflar halüsinasyon olarak işaretlenmeli."""
     srs = "UserManager handles users."
     uml = "@startuml\nclass UserManager {}\nclass UydurmaKlasFake {}\n@enduml"
-    r = semantik_sadakat_skoru(srs, uml)
+    r = calculate_semantic_fidelity(srs, uml)
     assert len(r["halusinasyonlar"]) > 0, "Halusin. tespit edilmedi"
     print(f"  PASS: Halusinasyon tespit edildi: {r['halusinasyonlar']}")
 
 def test_semantik_ieee_kriterleri():
     """IEEE kriterleri 4 kategori içermeli."""
-    r = semantik_sadakat_skoru(ORNEK_SRS, GECERLI_UML)
+    r = calculate_semantic_fidelity(ORNEK_SRS, GECERLI_UML)
     kriterler = r["ieee_kriterleri"]
     assert "C1_sinif_dogrul" in str(kriterler), "C1 kriteri eksik"
     assert "C2_iliski" in str(kriterler), "C2 kriteri eksik"
