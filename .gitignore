@@ -27,3 +27,5 @@ frontend/dist/
 results/*.csv
 results/*.json
 !results/.gitkeep
+backend/evaluation/results/*.partial.csv
+backend/evaluation/results/*.partial.json

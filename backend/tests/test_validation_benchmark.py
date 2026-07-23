@@ -1,5 +1,7 @@
 import os
 import sys
+import json
+from pathlib import Path
 
 
 BACKEND_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -14,7 +16,10 @@ from backend.evaluation.validation_benchmark import (
     run_semantic_cases,
     wilson_interval,
 )
-from backend.evaluation.deterministic_repair_experiment import build_report
+from backend.evaluation.shared_benchmark_deterministic_experiment import build_report
+
+
+RESULTS = Path(BACKEND_ROOT) / "evaluation" / "results"
 
 
 def test_ocl_validation_sample_matches_expected_flags():
@@ -31,31 +36,39 @@ def test_semantic_validation_sample_matches_expected_flags():
     assert failed == []
 
 
-def test_wilson_interval_for_paper_figure4_inference():
-    interval = wilson_interval(15, 20)
-    assert interval["successes"] == 15
-    assert interval["total"] == 20
-    assert interval["rate"] == 0.75
-    assert interval["lower_percent"] == 53.1
-    assert interval["upper_percent"] == 88.8
+def test_wilson_interval_for_shared_llm_benchmark():
+    interval = wilson_interval(47, 50)
+    assert interval["successes"] == 47
+    assert interval["total"] == 50
+    assert interval["rate"] == 0.94
+    assert interval["lower_percent"] == 83.8
+    assert interval["upper_percent"] == 97.9
 
 
-def test_repair_experiment_log_reproduces_15_of_20_success_rate():
+def test_shared_deterministic_repair_benchmark_reproduces_31_of_50_success_rate():
     report = build_report()
-    assert report["summary"]["total_cases"] == 20
-    assert report["summary"]["successful_repairs"] == 15
-    assert report["summary"]["failed_repairs"] == 5
-    assert report["summary"]["success_rate_percent"] == 75.0
-    assert report["summary"]["expectation_matches"] == 20
-    assert report["metadata"]["repair_engine"] == "deterministic_backend_repair; no LLM or external API calls"
+    assert report["summary"]["total_cases"] == 50
+    assert report["summary"]["initially_invalid_cases"] == 50
+    assert report["summary"]["successful_repairs"] == 31
+    assert report["summary"]["failed_repairs"] == 19
+    assert report["summary"]["success_rate_percent"] == 62.0
+
+
+def test_saved_shared_llm_benchmark_reports_47_of_50_success_rate():
+    report = json.loads((RESULTS / "shared_benchmark_llm_experiment.json").read_text(encoding="utf-8"))
+    assert report["summary"]["total_cases"] == 50
+    assert report["summary"]["successful_repairs"] == 47
+    assert report["summary"]["failed_repairs"] == 3
+    assert report["summary"]["success_rate_percent"] == 94.0
 
 
 if __name__ == "__main__":
     tests = [
         test_ocl_validation_sample_matches_expected_flags,
         test_semantic_validation_sample_matches_expected_flags,
-        test_wilson_interval_for_paper_figure4_inference,
-        test_repair_experiment_log_reproduces_15_of_20_success_rate,
+        test_wilson_interval_for_shared_llm_benchmark,
+        test_shared_deterministic_repair_benchmark_reproduces_31_of_50_success_rate,
+        test_saved_shared_llm_benchmark_reports_47_of_50_success_rate,
     ]
     passed = 0
     for test in tests:

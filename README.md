@@ -18,6 +18,7 @@ Proje üç ana parçadan oluşur:
 - [API Uçları](#api-uçları)
 - [Frontend Kullanımı](#frontend-kullanımı)
 - [Testler](#testler)
+- [Repair Benchmark Results](#repair-benchmark-results)
 - [Veri Hazırlık Araçları](#veri-hazırlık-araçları)
 - [Ortam Değişkenleri](#ortam-değişkenleri)
 - [Geliştirme Kuralları](#geliştirme-kuralları)
@@ -368,6 +369,46 @@ npm run lint
 npm run build
 ```
 
+## Repair Benchmark Results
+
+The current paper revision reports repair performance on a shared benchmark of
+50 invalid PlantUML scenarios (`S01`-`S50`). Deterministic repair and the real
+LLM-based autonomous repair endpoint are evaluated on the same cases, with
+`max_iterations=3`.
+
+| Repair mode | Cases | Successful repairs | Success rate | Wilson 95% CI |
+|---|---:|---:|---:|---:|
+| Deterministic backend repair | 50 | 31 | 62.0% | 48.2%-74.1% |
+| LLM autonomous repair (`gpt-4o-mini`) | 50 | 47 | 94.0% | 83.8%-97.9% |
+
+Primary benchmark files:
+
+```text
+backend/evaluation/shared_repair_benchmark_cases.py
+backend/evaluation/shared_benchmark_deterministic_experiment.py
+backend/evaluation/shared_benchmark_llm_experiment.py
+backend/evaluation/results/shared_benchmark_deterministic_experiment.*
+backend/evaluation/results/shared_benchmark_llm_experiment.*
+```
+
+Reproduce the deterministic benchmark:
+
+```bash
+python backend/evaluation/shared_benchmark_deterministic_experiment.py
+```
+
+Reproduce the LLM benchmark:
+
+```bash
+$env:OPENAI_API_KEY="sk-..."
+python backend/evaluation/shared_benchmark_llm_experiment.py --max-iterations 3
+```
+
+The older 20-case deterministic smoke-test script is retained only for helper
+functions and backward-compatible development checks. The old autonomous repair
+experiment files were removed; they are not the main paper evidence for the
+current revision.
+
 ## Veri Hazırlık Araçları
 
 Veri hazırlık dosyaları `data_pipeline/` altında toplanmıştır:
@@ -381,11 +422,11 @@ Ana veri dosyası:
 data_pipeline/datasets/pure_dataset.csv
 ```
 
-Otonom onarım deneylerini tekrar üretmek için:
+Güncel ortak onarım benchmarklarını tekrar üretmek için:
 
 ```bash
-python experiments/run_autonomous_repair.py --max-iterations 3
-python ai_core/log_analiz.py results/autonomous_repair_results.json
+python backend/evaluation/shared_benchmark_deterministic_experiment.py
+python backend/evaluation/shared_benchmark_llm_experiment.py --max-iterations 3
 ```
 
 ## Ortam Değişkenleri

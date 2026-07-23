@@ -7,7 +7,7 @@ This script intentionally measures the same local function chain used by
 
 It does not call OpenAI, ChatOpenAI, UMLGenerator, or UMLMultiAgentSystem.
 The purpose is to document the latency scope of Table IV separately from the
-real LLM repair latency measured by `autonomous_repair_latency_experiment.py`.
+shared LLM repair benchmark in `shared_benchmark_llm_experiment.py`.
 """
 
 from __future__ import annotations
@@ -180,8 +180,8 @@ def main() -> None:
         "srs_to_plantuml -> validate_ocl -> calculate_semantic_fidelity",
         "```",
         "",
-        "Real LLM repair latency is measured separately by",
-        "`backend/evaluation/autonomous_repair_latency_experiment.py`.",
+        "Real LLM repair evidence is measured separately by",
+        "`backend/evaluation/shared_benchmark_llm_experiment.py`.",
     ]
     md_path.write_text("\n".join(md_lines) + "\n", encoding="utf-8")
 

@@ -1,11 +1,10 @@
 """
-Reproducible backend repair experiment log for the deterministic CURE repair scope.
+Legacy deterministic repair smoke test for the deterministic CURE repair scope.
 
-This script creates a dated raw experiment log for the backend-owned structural
-repair path. It does not use the LLM/LangGraph agent and does not claim to
-reconstruct an earlier undocumented experiment. Instead, it records a fresh,
-repeatable 20-case local repair experiment using the repository's PlantUML
-syntax checks and OCL-inspired structural validator.
+This script is retained for helper functions and backward-compatible local
+checks. It does not provide the main paper evidence for the current revision.
+Use `shared_benchmark_deterministic_experiment.py` and
+`shared_benchmark_llm_experiment.py` for the shared S01-S50 repair benchmark.
 """
 
 from __future__ import annotations
@@ -235,10 +234,11 @@ def write_csv(path: Path, cases: list[dict]) -> None:
 def write_markdown(path: Path, report: dict) -> None:
     interval = report["wilson_95_ci"]
     lines = [
-        "# Deterministic Backend Repair Experiment Log",
+        "# Legacy Deterministic Backend Repair Smoke Test",
         "",
-        "This is a fresh reproducible experiment log generated from the current repository state.",
-        "It should not be described as an original historical run.",
+        "This legacy 20-case smoke test is retained for development checks.",
+        "It is not the main repair evidence for the current paper revision.",
+        "Use the shared S01-S50 benchmark results for reported repair rates.",
         "",
         "## Summary",
         "",
@@ -270,9 +270,9 @@ def write_markdown(path: Path, report: dict) -> None:
             "",
             "## Interpretation",
             "",
-            "The 15/20 result belongs to this newly generated deterministic backend repair experiment.",
-            "It is suitable as repository-backed evidence for the backend repair layer, but it does not",
-            "measure the full LLM-based Critic-Healer workflow.",
+            "This legacy result should not be reported as the current paper's main repair result.",
+            "The current revision reports the shared S01-S50 benchmark instead:",
+            "deterministic repair 31/50 (62.0%) and LLM autonomous repair 47/50 (94.0%).",
         ]
     )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

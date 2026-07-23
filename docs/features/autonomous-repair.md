@@ -11,6 +11,9 @@ dener, final compile ve opsiyonel semantik sonucu dondurur.
 Makaledeki onarim basari oraninin endpoint uzerinden tekrar uretilebilir ve
 olculebilir hale gelmesi.
 
+Guncel makale revizyonunda autonomous repair sonucu, deterministic repair ile
+ayni `S01`-`S50` ortak benchmark vakalari uzerinde raporlanir.
+
 ## Kurulum
 
 ```bash
@@ -30,6 +33,13 @@ curl -X POST http://localhost:8000/api/autonomous-repair \
   -d "{\"plantuml_kodu\":\"class UserManager {}\",\"max_iterations\":1}"
 ```
 
+Ortak benchmark kosusu:
+
+```bash
+$env:OPENAI_API_KEY="sk-..."
+python backend/evaluation/shared_benchmark_llm_experiment.py --max-iterations 3
+```
+
 ## Bagimliliklar
 
 - Backend compile/OCL validator
@@ -40,7 +50,8 @@ curl -X POST http://localhost:8000/api/autonomous-repair \
 
 - `backend/src/api/endpoints.py`
 - `ai_core/src/ai/agent_workflow.py`
-- `experiments/run_autonomous_repair.py`
+- `backend/evaluation/shared_repair_benchmark_cases.py`
+- `backend/evaluation/shared_benchmark_llm_experiment.py`
 
 ## API
 
@@ -76,13 +87,20 @@ Yok.
 
 ```bash
 python backend/tests/test_api_contracts.py
-python experiments/run_autonomous_repair.py --max-iterations 1
+python backend/evaluation/shared_benchmark_llm_experiment.py --max-iterations 1
 ```
+
+Son ana benchmark sonucu:
+
+| Benchmark | Cases | Successful repairs | Success rate | Wilson 95% CI |
+|---|---:|---:|---:|---:|
+| Shared S01-S50 LLM autonomous repair (`gpt-4o-mini`) | 50 | 47 | 94.0% | 83.8%-97.9% |
 
 ## Hata Senaryolari
 
 - AI ajan import edilemezse fallback healer devreye girer.
 - Final compile basarisizsa hata log endpointine kayit eklenir.
+- `OPENAI_API_KEY` yoksa shared LLM benchmark sonuc uretmeden durur.
 
 ## Gelistiren
 
@@ -91,4 +109,5 @@ Tarih: 2026-07-02
 
 ## Degisiklik Gecmisi
 
+v1.1 - Ortak S01-S50 benchmark sonucu eklendi.
 v1.0 - Autonomous repair dokumantasyonu eklendi.

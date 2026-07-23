@@ -27,5 +27,5 @@ The measured chain is:
 srs_to_plantuml -> validate_ocl -> calculate_semantic_fidelity
 ```
 
-Real LLM repair latency is measured separately by
-`backend/evaluation/autonomous_repair_latency_experiment.py`.
+Real LLM repair evidence is measured separately by
+`backend/evaluation/shared_benchmark_llm_experiment.py`.

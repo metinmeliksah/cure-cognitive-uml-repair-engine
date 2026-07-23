@@ -19,7 +19,13 @@ Varsayilan deger olan `3`, uc pratik riski dengelemek icin korunmustur:
 
 ## Dikkat edilmesi gereken nokta
 
-Bu varsayim henuz deneysel olarak dogrulanmis bir duyarlilik analizi degildir.
-Limit `2`, `4` ve `5` icin gercek OpenAI API anahtariyla
-`backend/evaluation/iteration_limit_sensitivity_experiment.py` calistirilip CSV sonucu
-uretilmeden "3 en iyi degerdir" seklinde kesin bir iddia kurulmamali.
+Guncel ana repair benchmark kosusu `max_iterations=3` ile yapilmistir:
+
+```bash
+python backend/evaluation/shared_benchmark_llm_experiment.py --max-iterations 3
+```
+
+Limit `2`, `4` ve `5` icin yeni bir duyarlilik analizi yapilmadan
+"3 en iyi degerdir" seklinde kesin bir iddia kurulmamali. Makalede daha guvenli
+ifade, `max_iterations=3` degerinin bu prototip kosusu icin sabit deney
+ayari olarak kullanildigini belirtmektir.

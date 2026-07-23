@@ -48,3 +48,17 @@ Tutarlılık: İlişki yönlerinin ve türlerinin mantıksal bütünlüğü.
 
 OCL Uyumu: Vektör tabanından gelen iş kurallarına sadakat.
 
+## Repair Benchmark Evidence
+
+Current repair evaluation uses a shared benchmark of 50 invalid PlantUML cases
+(`S01`-`S50`). Both deterministic backend repair and the real LLM-based
+autonomous repair endpoint are evaluated on the same cases with
+`max_iterations=3`.
+
+| Repair mode | Cases | Successful repairs | Success rate |
+|---|---:|---:|---:|
+| Deterministic backend repair | 50 | 31 | 62.0% |
+| LLM autonomous repair (`gpt-4o-mini`) | 50 | 47 | 94.0% |
+
+Primary evidence files are under `backend/evaluation/shared_*` and
+`backend/evaluation/results/shared_benchmark_*`.

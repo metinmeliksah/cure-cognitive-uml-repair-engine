@@ -3,8 +3,8 @@
     "scope": "backend/src/ocl_engine and backend/src/evaluators",
     "llm_calls": false,
     "autonomous_repair_reproduced": false,
-    "repair_experiment_log": "backend/evaluation/results/deterministic_repair_experiment.json",
-    "repair_experiment_scope": "fresh deterministic backend repair run, not the original historical LLM-agent run"
+    "repair_experiment_log": "backend/evaluation/results/shared_benchmark_llm_experiment.json",
+    "repair_experiment_scope": "shared S01-S50 benchmark; deterministic and LLM repair use the same cases"
   },
   "summary": {
     "ocl_total": 13,
@@ -12,14 +12,29 @@
     "semantic_total": 5,
     "semantic_passed": 5
   },
-  "figure4_inferred_wilson": {
-    "successes": 15,
-    "total": 20,
-    "rate": 0.75,
-    "lower": 0.5313,
-    "upper": 0.8881,
-    "lower_percent": 53.1,
-    "upper_percent": 88.8
+  "shared_repair_benchmark": {
+    "case_count": 50,
+    "max_iterations": 3,
+    "deterministic": {
+      "successes": 31,
+      "total": 50,
+      "rate": 0.62,
+      "lower": 0.4815,
+      "upper": 0.7414,
+      "lower_percent": 48.2,
+      "upper_percent": 74.1
+    },
+    "llm_autonomous": {
+      "successes": 47,
+      "total": 50,
+      "rate": 0.94,
+      "lower": 0.8378,
+      "upper": 0.9794,
+      "lower_percent": 83.8,
+      "upper_percent": 97.9
+    },
+    "deterministic_log": "backend/evaluation/results/shared_benchmark_deterministic_experiment.json",
+    "llm_log": "backend/evaluation/results/shared_benchmark_llm_experiment.json"
   },
   "ocl_cases": [
     {
